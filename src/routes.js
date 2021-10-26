@@ -18,6 +18,7 @@
 */
 
 import EditQuestion from "components/EditQuestion/EditQuestion";
+import Login from "components/Login/Login";
 import ImagesUpload from "components/UploadAndCropImage/UploadDiagramAndTextImages";
 
 
@@ -35,7 +36,15 @@ var routes = [
     icon: "nc-icon nc-bank",
     component: ImagesUpload,
     layout: "/admin",
-  }
+  },
+  {
+    path: "/login",
+    name: "UplaodAndCrop",
+    icon: "nc-icon nc-bank",
+    component: Login,
+    layout: "/admin",
+  },
+  
   
 ];
 export default routes;

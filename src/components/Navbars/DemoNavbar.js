@@ -89,7 +89,7 @@ function Header(props) {
     >
       <Container fluid>
         <div className="navbar-wrapper">
-          <div className="navbar-toggle">
+          {/* <div className="navbar-toggle">
             <button
               type="button"
               ref={sidebarToggle}
@@ -100,7 +100,7 @@ function Header(props) {
               <span className="navbar-toggler-bar bar2" />
               <span className="navbar-toggler-bar bar3" />
             </button>
-          </div>
+          </div> */}
           <NavbarBrand href="/">{getBrand()}</NavbarBrand>
         </div>
         <NavbarToggler onClick={toggle}>
@@ -124,7 +124,7 @@ function Header(props) {
               <Link to="#pablo" className="nav-link btn-magnify">
                 <i className="nc-icon nc-layout-11" />
                 <p>
-                  <span className="d-lg-none d-md-block">Stats</span>
+                  <span className="d-lg-none d-md-block">Make A Test</span>
                 </p>
               </Link>
             </NavItem>
