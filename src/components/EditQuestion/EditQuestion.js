@@ -7,8 +7,33 @@ import BioQues from "../../assets/img/FakeData/BioQues.png";
 import BioDiagram from "../../assets/img/FakeData/BioNew.png";
 
 import "./EditQuestion.css"
+import { useSelector } from "react-redux";
 
 const EditQuestion = () =>{
+    
+    const { user, questionImage } = useSelector((state) => ({ ...state }));
+
+    // const AREAS_MAP = {
+    //     name: "diagram",
+    //     areas: [
+    //       { name: "cowpat", shape: "poly", coords: [546,12,546,28,600,28,600,12], strokeColor: "blue"  },
+    //       { name: "Approximate", shape: "poly", coords: [18,48,18,64,113,64,113,48], strokeColor: "blue"  },
+    //     ]
+    // };
+
+    const wordMappings=questionImage.words.map(wordObj=>{
+        let mappedWordObj={};
+        mappedWordObj['name']=wordObj['WordText'];
+        mappedWordObj['shape']="poly";
+        let l=wordObj['Left'];
+        let t=wordObj['Top']
+        let w=wordObj['Width'];
+        let h=wordObj['Height'];
+        mappedWordObj['coords']=[l, t, l, t+h, l+w, t+h, l+w, t];
+        mappedWordObj['strokeColor']='blue'
+        return mappedWordObj;
+    });
+
     const [QuestionText, setQuestionText]=useState("")
     const [edits,setEdits] = useState([]);
 
@@ -27,10 +52,7 @@ const EditQuestion = () =>{
       };
     const AREAS_MAP = {
         name: "diagram",
-        areas: [
-          { name: "cowpat", shape: "poly", coords: [546,12,546,28,600,28,600,12], strokeColor: "blue"  },
-          { name: "Approximate", shape: "poly", coords: [18,48,18,64,113,64,113,48], strokeColor: "blue"  },
-        ]
+        areas: wordMappings
     };
     const clickedZone=(area)=>{
         addEdit(area);
@@ -47,12 +69,12 @@ const EditQuestion = () =>{
                 </Col>
             </div>
             <div className="row">
-                <Col md="7" sm="12">
+                <Col md="8" sm="12">
                     <Card>
                         <CardBody>
                             <CardTitle>Question Text Image</CardTitle>
                         </CardBody>
-                        <CardImg bottom src={BioQues} alt="..."></CardImg>
+                        <CardImg bottom src={questionImage.textUrl} alt="..."></CardImg>
                     </Card>
                 </Col>
                 <Col>
@@ -71,12 +93,12 @@ const EditQuestion = () =>{
                 </Col>
             </div>
             <div className="row">
-                <Col md="7" sm="12">
+                <Col md="8" sm="12">
                     <Card style={{overflow:"scroll"}}>
                         <CardBody >
                             <CardTitle>Question Text Image</CardTitle>
                         </CardBody>
-                        <ImageMapper src={BioDiagram} map={AREAS_MAP} onClick={(area)=>clickedZone(area)}  />
+                        <ImageMapper src={questionImage.diagramUrl} map={AREAS_MAP} onClick={(area)=>clickedZone(area)}  />
                     </Card>
                 </Col>
                 <Col>

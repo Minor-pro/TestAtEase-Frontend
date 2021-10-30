@@ -10,7 +10,7 @@ const ImageUpload=({cardTitle,fileSelector,setUrl})=>{
     const [upImg, setUpImg] = useState();
     const imgRef = useRef(null);
     const previewCanvasRef = useRef(null);
-    const [crop, setCrop] = useState({ unit: "%", width: 30 });
+    const [crop, setCrop] = useState({ unit: "%"});
     const [completedCrop, setCompletedCrop] = useState(null);
 
     const onSelectFile = (e) => {
@@ -56,16 +56,48 @@ const ImageUpload=({cardTitle,fileSelector,setUrl})=>{
           crop.width * scaleX,
           crop.height * scaleY
         );
-        console.log(completedCrop)
     }, [completedCrop]);
-
+    const resizeImage=(base64Str, maxWidth = 900, maxHeight = 450)=> {
+        return new Promise((resolve) => {
+          let img = new Image()
+          img.src = base64Str
+          img.onload = () => {
+            let canvas = document.createElement('canvas')
+            const MAX_WIDTH = maxWidth
+            const MAX_HEIGHT = maxHeight
+            let width = img.width
+            let height = img.height
+      
+            if (width > height) {
+              if (width > MAX_WIDTH) {
+                height *= MAX_WIDTH / width
+                width = MAX_WIDTH
+              }
+            } else {
+              if (height > MAX_HEIGHT) {
+                width *= MAX_HEIGHT / height
+                height = MAX_HEIGHT
+              }
+            }
+            canvas.width = width
+            canvas.height = height
+            let ctx = canvas.getContext('2d')
+            ctx.drawImage(img, 0, 0, width, height)
+            resolve(canvas.toDataURL())
+          }
+        })
+      }
     const generateImageUrl= (canvas, crop)=>{
         console.log(canvas,crop)
+        console.log(typeof crop)
         if (!crop || !canvas) {
           return;
         }
+
         let imageUrl = canvas.toDataURL();
-        //console.log(imageUrl);
+        console.log(imageUrl);
+        resizeImage(imageUrl)
+        console.log(imageUrl);
         setUrl(imageUrl);
         /////////////////////////////////// To Download Cropped Image
         // canvas.toBlob(
@@ -103,8 +135,8 @@ const ImageUpload=({cardTitle,fileSelector,setUrl})=>{
             />
             <div>
                 <canvas
-                ref={previewCanvasRef}
                 hidden
+                ref={previewCanvasRef}
                 // Rounding is important so the canvas width and height matches/is a multiple for sharpness.
                 style={{
                     width: Math.round(completedCrop?.width ?? 0),
@@ -117,7 +149,7 @@ const ImageUpload=({cardTitle,fileSelector,setUrl})=>{
         {completedCrop && <Button
             disabled={!completedCrop?.width || !completedCrop?.height}
             onClick={() =>
-                {console.log("hello");generateImageUrl(previewCanvasRef.current, completedCrop)}
+                {generateImageUrl(previewCanvasRef.current, completedCrop)}
             }
         >
             Upload Cropped

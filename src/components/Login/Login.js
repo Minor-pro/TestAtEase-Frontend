@@ -11,12 +11,11 @@ const Login=(props)=>{
     const dispatch = props.dispatch;
     const login = async (res) => {
         var user = res.profileObj;
-        console.log(`${process.env.REACT_APP_API}/api/login`);
         console.log(res)
         try {
             await axios({
                 method: "post",
-                url: `${process.env.REACT_APP_API}/api/login`,
+                url: `${process.env.REACT_APP_API}/login`,
                 data: { name: user.name, email: user.email },
                 headers: { "Content-Type": "application/json" },
             });
