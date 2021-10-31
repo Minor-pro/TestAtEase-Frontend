@@ -84,7 +84,7 @@ const EditQuestion = () =>{
                             <FormGroup>
                                 <Input
                                 type="textarea"
-                                defaultValue="Label the tunnels on the diagram using."
+                                defaultValue={questionImage.questionText}
                                 />
                             </FormGroup>
                             <Button className="btn-block" color="primary">Apply Edits</Button>

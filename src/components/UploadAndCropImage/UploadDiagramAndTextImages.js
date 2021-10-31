@@ -6,6 +6,11 @@ import { connect } from "react-redux";
 import { useHistory } from "react-router";
 import { uploadQuestionImage } from "redux/actions/questionImageAction";
 
+const {createWorker} = require('tesseract.js')
+const worker = createWorker({
+    logger: m => console.log(m)
+});
+
 const ImagesUpload=(props)=>{
     
     const history = useHistory();
@@ -13,16 +18,20 @@ const ImagesUpload=(props)=>{
 
     const [textUrl,setTextUrl]=useState();
     const [diagramUrl,setDiagramUrl]=useState();
+    const [questionText,setQuestionText]=useState();
     const words=[];
-    const AREAS_MAP = {
-        name: "diagram",
-        areas: [
-          { name: "cowpat", shape: "poly", coords: [546,12,546,28,600,28,600,12], strokeColor: "blue"  },
-          { name: "Approximate", shape: "poly", coords: [18,48,18,64,113,64,113,48], strokeColor: "blue"  },
-        ]
-    };
+    const questionImageToText=async (textUrl)=>{
 
-    const submitImages =async() => {
+        await worker.load();
+        await worker.loadLanguage('eng');
+        await worker.initialize('eng');
+        console.log("Recognizing...");
+        const { data: { text } } = await worker.recognize(textUrl);
+        setQuestionText(text);
+        console.log("Recognized text:", text);
+        await worker.terminate();
+    }
+    const getTextCoordinatesInDiagram=async()=>{
         var bodyFormData = new FormData();
         // bodyFormData.set('url', 'http://i.imgur.com/fwxooMv.png');
         bodyFormData.set('base64Image', diagramUrl);
@@ -44,7 +53,8 @@ const ImagesUpload=(props)=>{
             const imagesUrl={
                 "textUrl":textUrl,
                 "diagramUrl":diagramUrl,
-                "words":words
+                "words":words,
+                "questionText": questionText
             }
     
             dispatch(uploadQuestionImage(imagesUrl))
@@ -56,10 +66,12 @@ const ImagesUpload=(props)=>{
         });
     }
 
-    // useEffect(()=>{
-    //     console.log(textUrl);
-    //     console.log(diagramUrl);
-    // },[textUrl,diagramUrl])
+    const submitImages =async() => {
+
+        await questionImageToText(textUrl)
+        await getTextCoordinatesInDiagram();        
+    }
+    
     return (
         <div className="content">
             <div className="row">

@@ -25,7 +25,8 @@
     "react-scripts": "4.0.3",
     "reactstrap": "8.9.0",
     "redux": "^4.1.1",
-    "redux-devtools-extension": "^2.13.9"
+    "redux-devtools-extension": "^2.13.9",
+    "tesseract.js": "^2.1.5"
   },
   "scripts": {
     "start": "react-scripts start",
