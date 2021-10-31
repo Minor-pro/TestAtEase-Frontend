@@ -13,14 +13,6 @@ const EditQuestion = () =>{
     
     const { user, questionImage } = useSelector((state) => ({ ...state }));
 
-    // const AREAS_MAP = {
-    //     name: "diagram",
-    //     areas: [
-    //       { name: "cowpat", shape: "poly", coords: [546,12,546,28,600,28,600,12], strokeColor: "blue"  },
-    //       { name: "Approximate", shape: "poly", coords: [18,48,18,64,113,64,113,48], strokeColor: "blue"  },
-    //     ]
-    // };
-
     const wordMappings=questionImage.words.map(wordObj=>{
         let mappedWordObj={};
         mappedWordObj['name']=wordObj['WordText'];

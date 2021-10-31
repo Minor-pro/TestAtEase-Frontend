@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import {Button, Col} from "reactstrap";
 import ImageUpload from "./UploadImage";
-import axios from "axios";
 import { connect } from "react-redux";
 import { useHistory } from "react-router";
 import { uploadQuestionImage } from "redux/actions/questionImageAction";
+import { getCoordinates } from "functions/QuestionIamge";
 
 const {createWorker} = require('tesseract.js')
 const worker = createWorker({
@@ -32,17 +32,12 @@ const ImagesUpload=(props)=>{
         await worker.terminate();
     }
     const getTextCoordinatesInDiagram=async()=>{
-        var bodyFormData = new FormData();
-        // bodyFormData.set('url', 'http://i.imgur.com/fwxooMv.png');
-        bodyFormData.set('base64Image', diagramUrl);
-        bodyFormData.set('apikey', process.env.REACT_APP_OCRKEY); 
-        bodyFormData.set('isOverlayRequired', true);
-        axios({
-            method: 'post',
-            url: 'https://api.ocr.space/Parse/Image',
-            data: bodyFormData,
-            config: { headers: {'Content-Type': 'multipart/form-data' ,}}
-        })
+        var QuestionDiagramImageForm = new FormData();
+        // QuestionDiagramImageForm.set('url', 'http://i.imgur.com/fwxooMv.png');
+        QuestionDiagramImageForm.set('base64Image', diagramUrl);
+        QuestionDiagramImageForm.set('apikey', process.env.REACT_APP_OCRKEY); 
+        QuestionDiagramImageForm.set('isOverlayRequired', true);
+        getCoordinates(QuestionDiagramImageForm)
         .then(function (response) {
             console.log(response)
             response && response['data']['ParsedResults'][0]['TextOverlay']['Lines'].forEach(line => {
@@ -71,7 +66,7 @@ const ImagesUpload=(props)=>{
         await questionImageToText(textUrl)
         await getTextCoordinatesInDiagram();        
     }
-    
+
     return (
         <div className="content">
             <div className="row">
