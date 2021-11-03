@@ -6,31 +6,38 @@ import { useHistory } from "react-router";
 import { uploadQuestionImage } from "redux/actions/questionImageAction";
 import { getCoordinates } from "functions/QuestionIamge";
 
-const {createWorker} = require('tesseract.js')
-const worker = createWorker({
-    logger: m => console.log(m)
-});
+import Tesseract from "tesseract.js";
+
 
 const ImagesUpload=(props)=>{
     
     const history = useHistory();
     const dispatch = props.dispatch;
 
-    const [textUrl,setTextUrl]=useState();
-    const [diagramUrl,setDiagramUrl]=useState();
-    const [questionText,setQuestionText]=useState();
+    const [textUrl,setTextUrl]=useState('');
+    const [diagramUrl,setDiagramUrl]=useState('');
+    const [recognizedQuestionText,setRecognizedQuestionText]=useState('');
     const words=[];
-    const questionImageToText=async (textUrl)=>{
 
-        await worker.load();
-        await worker.loadLanguage('eng');
-        await worker.initialize('eng');
-        console.log("Recognizing...");
-        const { data: { text } } = await worker.recognize(textUrl);
-        setQuestionText(text);
-        console.log("Recognized text:", text);
-        await worker.terminate();
+    const questionImageToText= async(textUrl)=>{
+        try{
+            const result=await Tesseract.recognize(
+                textUrl,'eng',
+                { 
+                  logger: m => console.log(m) 
+                }
+              )
+            console.log(result['data']['text'])
+            setRecognizedQuestionText(()=>result['data']['text'])
+            console.log(recognizedQuestionText)
+        }
+        catch(err){
+            console.log(err);
+        }
     }
+
+    
+
     const getTextCoordinatesInDiagram=async()=>{
         var QuestionDiagramImageForm = new FormData();
         // QuestionDiagramImageForm.set('url', 'http://i.imgur.com/fwxooMv.png');
@@ -49,8 +56,9 @@ const ImagesUpload=(props)=>{
                 "textUrl":textUrl,
                 "diagramUrl":diagramUrl,
                 "words":words,
-                "questionText": questionText
+                "questionText": recognizedQuestionText
             }
+            console.log(imagesUrl)
     
             dispatch(uploadQuestionImage(imagesUrl))
 
@@ -64,6 +72,7 @@ const ImagesUpload=(props)=>{
     const submitImages =async() => {
 
         await questionImageToText(textUrl)
+        console.log(recognizedQuestionText)
         await getTextCoordinatesInDiagram();        
     }
 
