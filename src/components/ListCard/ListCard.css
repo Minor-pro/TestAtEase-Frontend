@@ -1,0 +1,39 @@
+.CardContainer{
+  margin: 100px 20px;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.LeftContainer{
+  border-radius: 10px;
+  padding: 10px;
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.textContainer{
+  width: 600px;
+  font-size: 15px;
+  margin-right: 10px;
+}
+
+.image{
+  width: 100px;
+}
+
+.imageContainer{
+
+}
+
+.AddButton{
+  background: #2FDD92;
+  padding: 10px;
+  margin: 25px;
+  border-radius: 4px;
+  color: white;
+  font-size: 20px;
+  font-weight: bolder;
+}

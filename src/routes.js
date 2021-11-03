@@ -19,6 +19,7 @@
 
 import EditQuestion from "components/EditQuestion/EditQuestion";
 import Login from "components/Login/Login";
+import ListCard from "components/ListCard/ListCard";
 import ImagesUpload from "components/UploadAndCropImage/UploadDiagramAndTextImages";
 
 
@@ -44,6 +45,13 @@ var routes = [
     component: Login,
     layout: "/admin",
   },
+  {
+    path: "/letscheck",
+    name: "Check",
+    icon: "nc-icon nc-bank",
+    component: ListCard,
+    layout: "/admin",
+  }
   
   
 ];
