@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 import ImageMapper from 'react-img-mapper';
 
@@ -8,8 +9,19 @@ import "./EditQuestion.css"
 import { useSelector } from "react-redux";
 
 import mergeImages from 'merge-images';
-const EditQuestion = () =>{
-    
+import { addQuestion } from "functions/Question";
+
+
+import { connect } from "react-redux";
+import { useHistory } from "react-router";
+import { uploadQuestionImage } from "redux/actions/questionImageAction";
+import { addTestQuestion } from "redux/actions/testAction";
+
+const EditQuestion = (props) =>{
+
+    const history = useHistory();
+    const dispatch = props.dispatch;
+
     const { user, questionImage } = useSelector((state) => ({ ...state }));
     const [recognizedWords,setRecognizedWords] =useState(questionImage.words)
     const [QuestionText, setQuestionText]=useState(questionImage.questionText)
@@ -40,7 +52,7 @@ const EditQuestion = () =>{
         })
     }
     const removeEdit=(coord)=>{
-        console.log(edits)
+        //console.log(edits)
         setEdits(prev=>prev.filter((o)=>o.coords!=coord))
     }
     const handleEditChange = (e) => {
@@ -89,15 +101,15 @@ const EditQuestion = () =>{
         })  
         mergeImages(textImages)
             .then(editedImage => {
-                console.log(editedImage);
+                //console.log(editedImage);
                 setDiagramImage(editedImage);
                 let questionImageWordCopy=questionImage.words;
                 edits.forEach(edit=>{
                     questionImageWordCopy.forEach(word=>{
                         if(word['Left']===edit.coords[0] && word['Top']===edit.coords[1]) {
-                            console.log(word)
+                            //console.log(word)
                             word['WordText']=edit['replacement'];                 
-                            console.log(word)      
+                            //console.log(word)      
                         }
                     })
                 })
@@ -106,18 +118,42 @@ const EditQuestion = () =>{
             });      
     };
     const handleTopicTagChange=(e)=>{
-        setTopicTags(e.target.value)
+        setTopicTags(e.target.value.split(", "))
     }
 
     const handleQuesionSubmit=(e)=>{
         e.preventDefault();
+        addQuestion(user, QuestionText, diagramImage, topicTags)
+        .then(res=>{
+            console.log(res)
+            dispatch(uploadQuestionImage({}))
+            history.push("/admin/upload-crop")
+        })
+        .catch(err=>{
+            console.log(err);
+        })    
+    }
+    const handleQuesionSubmitAndAdd=(e)=>{
+        e.preventDefault();
+        addQuestion(user, QuestionText, diagramImage, topicTags)
+        .then(res=>{
+            console.log(res)
+            dispatch(addTestQuestion(res['data']['question']))
+            dispatch(uploadQuestionImage({}))
+            history.push("/admin/upload-crop")
+        })
+        .catch(err=>{
+            console.log(err);
+        })    
+    }
+    const handleCancel=(e)=>{
+        dispatch(uploadQuestionImage({}))
+        history.push("/admin/upload-crop")
     }
 
     return( 
         <div className="content">
             <div className="row">
-                
-                
                 <Col md="9" sm="0">
                 </Col>
                 <Col md="3" sm="12">
@@ -184,9 +220,9 @@ const EditQuestion = () =>{
                         </CardBody>
                          <CardFooter className="QuestionEndFooter">
                             <ButtonGroup>
-                                <Button onSubmit={handleQuesionSubmit} >Save</Button>{' '}
-                                <Button color="success" round>Save & Add</Button>{' '}
-                                <Button color="danger" round>Cancel</Button>{' '}
+                                <Button onClick={handleQuesionSubmit} >Save</Button>{' '}
+                                <Button onClick={handleQuesionSubmitAndAdd} color="success" round>Save & Add</Button>{' '}
+                                <Button onClick={handleCancel} color="danger" round>Cancel</Button>{' '}
                             </ButtonGroup>
                             <canvas hidden id="textImage" width="200" height="200"></canvas><canvas></canvas>
                         </CardFooter>
@@ -196,4 +232,4 @@ const EditQuestion = () =>{
         </div>
     )
 }
-export default EditQuestion;
+export default connect()(EditQuestion);
