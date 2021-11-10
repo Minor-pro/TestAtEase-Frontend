@@ -28,19 +28,22 @@ const EditQuestion = (props) =>{
     const [diagramImage, setDiagramImage]=useState(questionImage.diagramUrl);
     const [edits,setEdits] = useState([]);
     const [topicTags, setTopicTags] = useState('');
+    let wordMappings=[];
 
-    const wordMappings=recognizedWords.map(wordObj=>{
-        let mappedWordObj={};
-        mappedWordObj['name']=wordObj['WordText'];
-        mappedWordObj['shape']="poly";
-        let l=wordObj['Left'];
-        let t=wordObj['Top']
-        let w=wordObj['Width'];
-        let h=wordObj['Height'];
-        mappedWordObj['coords']=[l, t, l, t+h, l+w, t+h, l+w, t];
-        mappedWordObj['strokeColor']='blue'
-        return mappedWordObj;
-    });
+    if(recognizedWords && recognizedWords.length>0){
+            wordMappings=recognizedWords.map(wordObj=>{
+            let mappedWordObj={};
+            mappedWordObj['name']=wordObj['WordText'];
+            mappedWordObj['shape']="poly";
+            let l=wordObj['Left'];
+            let t=wordObj['Top']
+            let w=wordObj['Width'];
+            let h=wordObj['Height'];
+            mappedWordObj['coords']=[l, t, l, t+h, l+w, t+h, l+w, t];
+            mappedWordObj['strokeColor']='blue'
+            return mappedWordObj;
+        });
+    }
     const AREAS_MAP = {
         name: "diagram",
         areas: wordMappings
@@ -123,7 +126,7 @@ const EditQuestion = (props) =>{
 
     const handleQuesionSubmit=(e)=>{
         e.preventDefault();
-        addQuestion(user, QuestionText, diagramImage, topicTags)
+        addQuestion(user, QuestionText, diagramImage, topicTags, recognizedWords)
         .then(res=>{
             console.log(res)
             dispatch(uploadQuestionImage({}))
@@ -135,7 +138,7 @@ const EditQuestion = (props) =>{
     }
     const handleQuesionSubmitAndAdd=(e)=>{
         e.preventDefault();
-        addQuestion(user, QuestionText, diagramImage, topicTags)
+        addQuestion(user, QuestionText, diagramImage, topicTags, recognizedWords)
         .then(res=>{
             console.log(res)
             dispatch(addTestQuestion(res['data']['question']))
@@ -160,19 +163,19 @@ const EditQuestion = (props) =>{
                     <Button className="FinishTestButton btn-block" size="lg" color="info">Finish Test</Button>{' '}
                 </Col>
             </div>
-            <div className="row">
-                <Col md="8" sm="12">
+            {questionImage.questionText && <div className="row">
+                {questionImage.textUrl!='' && <Col md="8" sm="12">
                     <Card>
                         <CardBody>
                             <CardTitle>Question Text Image</CardTitle>
                         </CardBody>
                         <CardImg bottom src={questionImage.textUrl} alt="..."></CardImg>
                     </Card>
-                </Col>
+                </Col>}
                 <Col>
                     <Card>
                         <CardBody>
-                            <CardTitle>Edit Question Text Image</CardTitle>
+                            <CardTitle>Edit Question Text</CardTitle>
                             <FormGroup>
                                 <Input
                                 type="textarea"
@@ -182,14 +185,21 @@ const EditQuestion = (props) =>{
                             </FormGroup>
                             <Button className="btn-block" color="primary">Apply Edits</Button>
                         </CardBody>
+                        {questionImage.diagramUrl=='' && <CardFooter className="QuestionEndFooter">
+                            <ButtonGroup>
+                                <Button onClick={handleQuesionSubmit} >Save</Button>{' '}
+                                <Button onClick={handleQuesionSubmitAndAdd} color="success" round>Save & Add</Button>{' '}
+                                <Button onClick={handleCancel} color="danger" round>Cancel</Button>{' '}
+                            </ButtonGroup>
+                        </CardFooter>}
                     </Card>
                 </Col>
-            </div>
-            <div className="row">
+            </div>}
+            {questionImage.diagramUrl && <div className="row">
                 <Col md="8" sm="12">
                     <Card style={{overflow:"scroll"}}>
                         <CardBody >
-                            <CardTitle>Question Text Image</CardTitle>
+                            <CardTitle>Question Diagram Image</CardTitle>
                         </CardBody>
                         <ImageMapper src={diagramImage} map={AREAS_MAP} onClick={(area)=>clickedZone(area)}  />
                     </Card>
@@ -197,7 +207,7 @@ const EditQuestion = (props) =>{
                 <Col>
                     <Card>
                         <CardBody  >
-                            <CardTitle>Edit Question Text Image</CardTitle>                            
+                            <CardTitle>Edit Question Diagram Image</CardTitle>                            
                             <CardText><small className="text-muted">Hover over the diagram and Click over the word to replace it.</small></CardText>
                             {edits.map(({name,coords},index) => (
                                 <Row key={coords} >
@@ -218,17 +228,17 @@ const EditQuestion = (props) =>{
                             <Input type="text" placeholder="Comma Seperated Topic Tags" onChange={handleTopicTagChange}/>
                             
                         </CardBody>
-                         <CardFooter className="QuestionEndFooter">
+                        <CardFooter className="QuestionEndFooter">
                             <ButtonGroup>
                                 <Button onClick={handleQuesionSubmit} >Save</Button>{' '}
                                 <Button onClick={handleQuesionSubmitAndAdd} color="success" round>Save & Add</Button>{' '}
                                 <Button onClick={handleCancel} color="danger" round>Cancel</Button>{' '}
                             </ButtonGroup>
-                            <canvas hidden id="textImage" width="200" height="200"></canvas><canvas></canvas>
+                            <canvas hidden id="textImage" width="200" height="200"></canvas>
                         </CardFooter>
                     </Card>
                 </Col>
-            </div>
+            </div>}
         </div>
     )
 }

@@ -20,6 +20,8 @@ import {
 
 import routes from "routes.js";
 
+import Logo from "../../assets/img/TestAtEaseLogo.png";
+
 function Header(props) {
   const [isOpen, setIsOpen] = React.useState(false);
   const [dropdownOpen, setDropdownOpen] = React.useState(false);

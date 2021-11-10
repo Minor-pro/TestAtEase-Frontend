@@ -1,6 +1,6 @@
 import EditQuestion from "components/EditQuestion/EditQuestion";
-import ListCard from "components/ListCard/ListCard";
 import Login from "components/Login/Login";
+import QuestionList from "components/QuestionList/QuestionList";
 import ImagesUpload from "components/UploadAndCropImage/UploadDiagramAndTextImages";
 import Dashboard from "pages/Dashboard/Dashboard";
 import React from "react";
@@ -15,7 +15,7 @@ const App = (props) => {
             <Route path="/login" componrnt={Login}/>
             <Route path="/upload-crop" component={ImagesUpload}/>
             <Route path="/edit" component={EditQuestion}/>
-            <Route path = "/letscheck" componen={ListCard} />
+            <Route path = "/list" componen={QuestionList} />
         </Switch>
     </div>
 }

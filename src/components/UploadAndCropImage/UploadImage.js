@@ -152,7 +152,7 @@ const ImageUpload=({cardTitle,fileSelector,setUrl})=>{
                 {generateImageUrl(previewCanvasRef.current, completedCrop)}
             }
         >
-            Upload Cropped
+            Crop Image
         </Button>}
         </CardFooter>
     </Card>

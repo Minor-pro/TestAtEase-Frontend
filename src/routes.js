@@ -19,8 +19,8 @@
 
 import EditQuestion from "components/EditQuestion/EditQuestion";
 import Login from "components/Login/Login";
-import ListCard from "components/ListCard/ListCard";
 import ImagesUpload from "components/UploadAndCropImage/UploadDiagramAndTextImages";
+import QuestionList from "components/QuestionList/QuestionList";
 
 
 var routes = [
@@ -33,23 +33,23 @@ var routes = [
   },
   {
     path: "/upload-crop",
-    name: "UplaodAndCrop",
+    name: "Uplaod And Crop",
     icon: "nc-icon nc-bank",
     component: ImagesUpload,
     layout: "/admin",
   },
   {
     path: "/login",
-    name: "UplaodAndCrop",
+    name: "Login",
     icon: "nc-icon nc-bank",
     component: Login,
     layout: "/admin",
   },
   {
-    path: "/letscheck",
-    name: "Check",
+    path: "/list",
+    name: "My Questions",
     icon: "nc-icon nc-bank",
-    component: ListCard,
+    component: QuestionList,
     layout: "/admin",
   }
   

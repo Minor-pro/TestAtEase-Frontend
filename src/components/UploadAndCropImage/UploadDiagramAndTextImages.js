@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {Button, Col} from "reactstrap";
+import {Button, Col, Progress} from "reactstrap";
 import ImageUpload from "./UploadImage";
 import { connect } from "react-redux";
 import { useHistory } from "react-router";
@@ -17,6 +17,8 @@ const ImagesUpload=(props)=>{
     const [textUrl,setTextUrl]=useState('');
     const [diagramUrl,setDiagramUrl]=useState('');
     const [recognizedQuestionText,setRecognizedQuestionText]=useState('');
+    const [recognizedWords, setRecognizedWords]=useState([])
+    const [loadingStage, setLoadingStage]=useState('')
     const words=[];
 
     const questionImageToText= async(textUrl)=>{
@@ -24,19 +26,18 @@ const ImagesUpload=(props)=>{
             const result=await Tesseract.recognize(
                 textUrl,'eng',
                 { 
-                  logger: m => console.log(m) 
+                  logger: m => {setLoadingStage({progress:m['progress'],status:(m['status']).replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase())})}
+
                 }
               )
             console.log(result['data']['text'])
-            setRecognizedQuestionText(()=>result['data']['text'])
-            console.log(recognizedQuestionText)
+            setLoadingStage({progress:1, status:"Text Recognized"})
+            setRecognizedQuestionText((_)=>result['data']['text'])
         }
         catch(err){
             console.log(err);
         }
     }
-
-    
 
     const getTextCoordinatesInDiagram=async()=>{
         var QuestionDiagramImageForm = new FormData();
@@ -52,28 +53,29 @@ const ImagesUpload=(props)=>{
                     words.push(word);
                 })
             });
-            const imagesUrl={
-                "textUrl":textUrl,
-                "diagramUrl":diagramUrl,
-                "words":words,
-                "questionText": recognizedQuestionText
-            }
-            console.log(imagesUrl)
-    
-            dispatch(uploadQuestionImage(imagesUrl))
-
-            history.push('/admin/edit');
+            console.log(words)
+            setRecognizedWords(words)
+            console.log(recognizedWords)
         })
         .catch(function (response) {
             console.log(response);
         });
     }
-
     const submitImages =async() => {
-
-        await questionImageToText(textUrl)
-        console.log(recognizedQuestionText)
-        await getTextCoordinatesInDiagram();        
+        textUrl!='' && await questionImageToText(textUrl)
+        diagramUrl!='' && await getTextCoordinatesInDiagram();        
+    }
+    const ContinueToEdit=()=>{
+        console.log(words)
+        console.log(recognizedWords)
+        const imagesUrl={
+            "textUrl":textUrl,
+            "diagramUrl":diagramUrl,
+            "words":recognizedWords,
+            "questionText": recognizedQuestionText
+        }
+        dispatch(uploadQuestionImage(imagesUrl))
+        history.push('/admin/edit');
     }
 
     return (
@@ -83,7 +85,7 @@ const ImagesUpload=(props)=>{
 
                 </Col>
                 <Col md={4} sm={12}>
-                    <Button className="btn btn-block" color="primary" onClick={submitImages}>Continue to Edit</Button>
+                    <Button className="btn btn-block" color="primary" onClick={ContinueToEdit} disabled={recognizedQuestionText=='' && recognizedWords=='' } >Continue to Edit</Button>
                 </Col>
             </div>
             <div className="row">
@@ -94,6 +96,12 @@ const ImagesUpload=(props)=>{
                     <ImageUpload cardTitle="Diagram" fileSelector="myFileSelector2" setUrl={setDiagramUrl}/>
                 </Col>
             </div>
+            {(textUrl!='' || diagramUrl!='') && <div className="row">
+                <Col>
+                    <Button className="btn btn-block" color="primary" onClick={submitImages}>Upload Cropped Images</Button>
+                    <Progress animated color="sucess" value={loadingStage['progress']*100} >{loadingStage['status']}</Progress>
+                </Col>
+            </div>}
         </div>
     );
 }
