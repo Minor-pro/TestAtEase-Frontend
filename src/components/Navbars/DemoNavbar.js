@@ -20,7 +20,7 @@ import {
 
 import routes from "routes.js";
 
-import Logo from "../../assets/img/TestAtEaseLogo.png";
+//import Logo from "../../assets/img/TestAtEaseLogo.png";
 
 function Header(props) {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -49,10 +49,10 @@ function Header(props) {
     });
     return brandName;
   };
-  const openSidebar = () => {
-    document.documentElement.classList.toggle("nav-open");
-    sidebarToggle.current.classList.toggle("toggled");
-  };
+  // const openSidebar = () => {
+  //   document.documentElement.classList.toggle("nav-open");
+  //   sidebarToggle.current.classList.toggle("toggled");
+  // };
   // function that adds color dark/transparent to the navbar on resize (this is for the collapse)
   const updateColor = () => {
     if (window.innerWidth < 993 && isOpen) {

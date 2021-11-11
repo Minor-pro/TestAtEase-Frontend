@@ -4,7 +4,7 @@ import PerfectScrollbar from "perfect-scrollbar";
 import { Route, Switch, useLocation } from "react-router-dom";
 
 import DemoNavbar from "../../components/Navbars/DemoNavbar";
-import Sidebar from "../../components/Sidebar/Sidebar"
+//import Sidebar from "../../components/Sidebar/Sidebar"
 
 import "./Dashboard.css"
 
@@ -14,8 +14,8 @@ var ps;
 
 const Dashboard = (props)=>{
 
-    const backgroundColor = "black";
-    const activeColor = "info";
+    // const backgroundColor = "black";
+    // const activeColor = "info";
     const mainPanel = React.useRef();
     const location = useLocation();
     React.useEffect(() => {

@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import GoogleLogin from "react-google-login";
 import { connect } from "react-redux";
 import { loginUser } from "redux/actions/userAction";
 import axios from 'axios'; 
 
-import { useHistory } from "react-router-dom";
+//import { useHistory } from "react-router-dom";
 
 const Login=(props)=>{
-    const history = useHistory();
+    //const history = useHistory();
     const dispatch = props.dispatch;
     const login = async (res) => {
         var user = res.profileObj;

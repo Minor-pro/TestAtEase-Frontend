@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {Button, Col, Progress} from "reactstrap";
 import ImageUpload from "./UploadImage";
 import { connect } from "react-redux";
@@ -6,8 +6,7 @@ import { useHistory } from "react-router";
 import { uploadQuestionImage } from "redux/actions/questionImageAction";
 import { getCoordinates } from "functions/QuestionIamge";
 
-import Tesseract from "tesseract.js";
-
+import { createWorker, PSM } from "tesseract.js";
 
 const ImagesUpload=(props)=>{
     
@@ -23,16 +22,30 @@ const ImagesUpload=(props)=>{
 
     const questionImageToText= async(textUrl)=>{
         try{
-            const result=await Tesseract.recognize(
-                textUrl,'eng',
-                { 
-                  logger: m => {setLoadingStage({progress:m['progress'],status:(m['status']).replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase())})}
-
-                }
-              )
-            console.log(result['data']['text'])
+            // const result=await Tesseract.recognize(
+            //     textUrl,'eng',
+            //     { 
+            //         logger: m => {setLoadingStage({progress:m['progress'],status:(m['status']).replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase())})}
+                    
+            //     }
+            //   )
+            // console.log(result['data']['text'])
+            // setLoadingStage({progress:1, status:"Text Recognized"})
+            // setRecognizedQuestionText((_)=>result['data']['text'])
+            const worker = createWorker({
+                logger: m => {console.log(m);setLoadingStage({progress:m['progress'],status:(m['status']).replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase())})}
+              });
+            await worker.load();
+            await worker.loadLanguage('eng');
+            await worker.initialize('eng');
+            await worker.setParameters({
+                tessedit_pageseg_mode: PSM.AUTO_OSD,
+            });
+            const { data: { text } } = await worker.recognize(textUrl);
+            console.log(text);
             setLoadingStage({progress:1, status:"Text Recognized"})
-            setRecognizedQuestionText((_)=>result['data']['text'])
+            setRecognizedQuestionText((_)=>text)
+            await worker.terminate();
         }
         catch(err){
             console.log(err);
@@ -62,8 +75,8 @@ const ImagesUpload=(props)=>{
         });
     }
     const submitImages =async() => {
-        textUrl!='' && await questionImageToText(textUrl)
-        diagramUrl!='' && await getTextCoordinatesInDiagram();        
+        textUrl!=='' && await questionImageToText(textUrl)
+        diagramUrl!=='' && await getTextCoordinatesInDiagram();        
     }
     const ContinueToEdit=()=>{
         console.log(words)
@@ -85,7 +98,7 @@ const ImagesUpload=(props)=>{
 
                 </Col>
                 <Col md={4} sm={12}>
-                    <Button className="btn btn-block" color="primary" onClick={ContinueToEdit} disabled={recognizedQuestionText=='' && recognizedWords=='' } >Continue to Edit</Button>
+                    <Button className="btn btn-block" color="primary" onClick={ContinueToEdit} disabled={recognizedQuestionText==='' && recognizedWords==='' } >Continue to Edit</Button>
                 </Col>
             </div>
             <div className="row">
@@ -96,7 +109,7 @@ const ImagesUpload=(props)=>{
                     <ImageUpload cardTitle="Diagram" fileSelector="myFileSelector2" setUrl={setDiagramUrl}/>
                 </Col>
             </div>
-            {(textUrl!='' || diagramUrl!='') && <div className="row">
+            {(textUrl!=='' || diagramUrl!=='') && <div className="row">
                 <Col>
                     <Button className="btn btn-block" color="primary" onClick={submitImages}>Upload Cropped Images</Button>
                     <Progress animated color="sucess" value={loadingStage['progress']*100} >{loadingStage['status']}</Progress>

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col } from "reactstrap";
 import QuestionListCard from "./QuestionListCard";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -43,14 +42,14 @@ const QuestionList=(props)=>{
           console.log(err);
         })
     }
-    
+    //eslint-disable-next-line
     useEffect(()=>{
         console.log(questionToEdit)
         if(questionToEdit)ContinueToEdit()
-    },[questionToEdit])
+    },[questionToEdit]) // eslint-disable-line react-hooks/exhaustive-deps
     useEffect(()=>{
         loadAllQuestion()
-    },[])
+    },[]) // eslint-disable-line react-hooks/exhaustive-deps
     return (
         <div className="content">
             

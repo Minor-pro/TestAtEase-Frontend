@@ -4,7 +4,7 @@ import QuestionList from "components/QuestionList/QuestionList";
 import ImagesUpload from "components/UploadAndCropImage/UploadDiagramAndTextImages";
 import Dashboard from "pages/Dashboard/Dashboard";
 import React from "react";
-import {Switch, Redirect, Route} from "react-router-dom";
+import {Switch, Route} from "react-router-dom";
 
 
 

@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 
 import ImageMapper from 'react-img-mapper';
 
-import {Button, Card, CardHeader, CardBody, CardTitle, CardImg, CardText, CardSubtitle, Container, FormGroup, Form, Input, Row, Col, InputGroupAddon, InputGroupText, InputGroup, CardFooter, ButtonGroup} from "reactstrap";
+import {Button, Card, CardBody, CardTitle, CardImg, CardText, FormGroup, Input, Row, Col, CardFooter, ButtonGroup} from "reactstrap";
 
 import "./EditQuestion.css"
 import { useSelector } from "react-redux";
@@ -51,12 +50,12 @@ const EditQuestion = (props) =>{
 
     const addEdit=(area)=>{
         setEdits((prev) => {
-            return [... (new Set([...prev, area]))];
+            return [...(new Set([...prev, area]))];
         })
     }
     const removeEdit=(coord)=>{
         //console.log(edits)
-        setEdits(prev=>prev.filter((o)=>o.coords!=coord))
+        setEdits(prev=>prev.filter((o)=>o.coords!==coord))
     }
     const handleEditChange = (e) => {
         const values = [...edits];
@@ -94,7 +93,7 @@ const EditQuestion = (props) =>{
             x:0,
             y:0
         })
-        edits.map(({coords, replacement})=>{
+        edits.forEach(({coords, replacement})=>{
             textImages.push({
                 src: replacementTextAsImage(coords,replacement),
                 x:coords[0],
@@ -164,7 +163,7 @@ const EditQuestion = (props) =>{
                 </Col>
             </div>
             {questionImage.questionText && <div className="row">
-                {questionImage.textUrl!='' && <Col md="8" sm="12">
+                {questionImage.textUrl!=='' && <Col md="8" sm="12">
                     <Card>
                         <CardBody>
                             <CardTitle>Question Text Image</CardTitle>
@@ -185,7 +184,7 @@ const EditQuestion = (props) =>{
                             </FormGroup>
                             <Button className="btn-block" color="primary">Apply Edits</Button>
                         </CardBody>
-                        {questionImage.diagramUrl=='' && <CardFooter className="QuestionEndFooter">
+                        {questionImage.diagramUrl==='' && <CardFooter className="QuestionEndFooter">
                             <ButtonGroup>
                                 <Button onClick={handleQuesionSubmit} >Save</Button>{' '}
                                 <Button onClick={handleQuesionSubmitAndAdd} color="success" round>Save & Add</Button>{' '}

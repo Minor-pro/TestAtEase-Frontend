@@ -2,7 +2,7 @@ import React, { useState, useCallback, useRef, useEffect } from "react";
 import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import './UploadImage.css'
-import { Button, Card, CardBody, CardFooter, CardHeader, Col } from "reactstrap";
+import { Button, Card, CardBody, CardFooter, CardHeader } from "reactstrap";
 
 
 

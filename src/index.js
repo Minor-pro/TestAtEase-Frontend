@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { composeWithDevTools } from "redux-devtools-extension";
-import createHistory from "history/createBrowserHistory";
+//import createHistory from "history/createBrowserHistory";
 
 import "bootstrap/dist/css/bootstrap.css";
 import "assets/scss/paper-dashboard.scss?v=1.3.0";
@@ -46,7 +46,7 @@ const persistedState = loadFromLocalStorage();
 const store = createStore(rootReducer, persistedState, composeWithDevTools());
 store.subscribe(() => saveToLocalStorage(store.getState()));
 
-const history = createHistory();
+//const history = createHistory();
 
 ReactDOM.render(
   <Provider store={store}>
