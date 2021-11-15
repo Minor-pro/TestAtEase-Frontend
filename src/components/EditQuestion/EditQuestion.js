@@ -15,6 +15,7 @@ import { connect } from "react-redux";
 import { useHistory } from "react-router";
 import { uploadQuestionImage } from "redux/actions/questionImageAction";
 import { addTestQuestion } from "redux/actions/testAction";
+import QuestionTillNowModal from "components/Modals/QuestionTillNowModal";
 
 const EditQuestion = (props) =>{
 
@@ -22,11 +23,17 @@ const EditQuestion = (props) =>{
     const dispatch = props.dispatch;
 
     const { user, questionImage } = useSelector((state) => ({ ...state }));
-    const [recognizedWords,setRecognizedWords] =useState(questionImage.words)
-    const [QuestionText, setQuestionText]=useState(questionImage.questionText)
-    const [diagramImage, setDiagramImage]=useState(questionImage.diagramUrl);
+    const currentQuestionImageIndex= questionImage.textUrl.length-1;
+    const [recognizedWords,setRecognizedWords] =useState(questionImage.words[currentQuestionImageIndex])
+    const [QuestionText, setQuestionText]=useState(questionImage.questionText[currentQuestionImageIndex])
+    const [diagramImage, setDiagramImage]=useState(questionImage.diagramUrl[currentQuestionImageIndex]);
     const [edits,setEdits] = useState([]);
     const [topicTags, setTopicTags] = useState('');
+
+    
+    const [modal, setModal] = useState(false);
+    const toggleModal= () => setModal(!modal);
+
     let wordMappings=[];
 
     if(recognizedWords && recognizedWords.length>0){
@@ -105,7 +112,7 @@ const EditQuestion = (props) =>{
             .then(editedImage => {
                 //console.log(editedImage);
                 setDiagramImage(editedImage);
-                let questionImageWordCopy=questionImage.words;
+                let questionImageWordCopy=questionImage.words[currentQuestionImageIndex];
                 edits.forEach(edit=>{
                     questionImageWordCopy.forEach(word=>{
                         if(word['Left']===edit.coords[0] && word['Top']===edit.coords[1]) {
@@ -123,12 +130,42 @@ const EditQuestion = (props) =>{
         setTopicTags(e.target.value.split(", "))
     }
 
+    const handleAddMore=(e)=>{
+        e.preventDefault();
+        const textTillNow=[...questionImage.questionText];
+        textTillNow[currentQuestionImageIndex]=QuestionText;
+        const diagramsTillNow=[...questionImage.diagramUrl];
+        diagramsTillNow[currentQuestionImageIndex]=diagramImage;
+        const recognizedWordsTillNow=[...questionImage.words];
+        recognizedWordsTillNow[currentQuestionImageIndex]=recognizedWords;
+        const imagesUrl={
+            "textUrl":[...questionImage.textUrl],
+            "diagramUrl":diagramsTillNow,
+            "words":recognizedWordsTillNow,
+            "questionText": textTillNow
+        }
+        console.log(imagesUrl)
+        dispatch(uploadQuestionImage(imagesUrl))
+        history.push("/admin/upload-crop")
+    }
+
     const handleQuesionSubmit=(e)=>{
         e.preventDefault();
-        addQuestion(user, QuestionText, diagramImage, topicTags, recognizedWords)
+        const textTillNow=[...questionImage.questionText];
+        textTillNow[currentQuestionImageIndex]=QuestionText;
+        const diagramsTillNow=[...questionImage.diagramUrl];
+        diagramsTillNow[currentQuestionImageIndex]=diagramImage;
+        const recognizedWordsTillNow=[...questionImage.words];
+        recognizedWordsTillNow[currentQuestionImageIndex]=recognizedWords;
+        addQuestion(user, textTillNow, diagramsTillNow, topicTags, recognizedWordsTillNow)
         .then(res=>{
             console.log(res)
-            dispatch(uploadQuestionImage({}))
+            dispatch(uploadQuestionImage({
+                "textUrl":[],
+                "diagramUrl":[],
+                "words":[],
+                "questionText": []
+            }))
             history.push("/admin/upload-crop")
         })
         .catch(err=>{
@@ -137,11 +174,22 @@ const EditQuestion = (props) =>{
     }
     const handleQuesionSubmitAndAdd=(e)=>{
         e.preventDefault();
-        addQuestion(user, QuestionText, diagramImage, topicTags, recognizedWords)
+        const textTillNow=[...questionImage.questionText];
+        textTillNow[currentQuestionImageIndex]=QuestionText;
+        const diagramsTillNow=[...questionImage.diagramUrl];
+        diagramsTillNow[currentQuestionImageIndex]=diagramImage;
+        const recognizedWordsTillNow=[...questionImage.words];
+        recognizedWordsTillNow[currentQuestionImageIndex]=recognizedWords;
+        addQuestion(user, textTillNow, diagramsTillNow, topicTags, recognizedWordsTillNow)
         .then(res=>{
             console.log(res)
             dispatch(addTestQuestion(res['data']['question']))
-            dispatch(uploadQuestionImage({}))
+            dispatch(uploadQuestionImage({
+                "textUrl":[],
+                "diagramUrl":[],
+                "words":[],
+                "questionText": []
+            }))
             history.push("/admin/upload-crop")
         })
         .catch(err=>{
@@ -149,26 +197,38 @@ const EditQuestion = (props) =>{
         })    
     }
     const handleCancel=(e)=>{
-        dispatch(uploadQuestionImage({}))
+        dispatch(uploadQuestionImage({
+            "textUrl":[],
+            "diagramUrl":[],
+            "words":[],
+            "questionText": []
+        }))
         history.push("/admin/upload-crop")
     }
 
     return( 
         <div className="content">
-            <div className="row">
-                <Col md="9" sm="0">
+            <div className="row flex-column-reverse flex-md-row">
+                <Col md="3" sm="0">
+                    <Button className="QuestionTillNowButton btn-block" size="lg" color="warning" onClick={toggleModal}>View Question Till Now</Button>{' '}
+                    <QuestionTillNowModal modal={modal} toggle={toggleModal} questionImage={questionImage}/>
+                </Col>
+                <Col md="3" sm="0">
+                    <Button className="AddMoreButton btn-block" size="lg" color="success" onClick={handleAddMore}>Add More</Button>{' '}
+                </Col>
+                <Col md="3" sm="0">
                 </Col>
                 <Col md="3" sm="12">
                     <Button className="FinishTestButton btn-block" size="lg" color="info">Finish Test</Button>{' '}
                 </Col>
             </div>
-            {questionImage.questionText && <div className="row">
-                {questionImage.textUrl!=='' && <Col md="8" sm="12">
+            {questionImage.questionText[currentQuestionImageIndex] && <div className="row">
+                {questionImage.textUrl[currentQuestionImageIndex]!=='' && <Col md="8" sm="12">
                     <Card>
                         <CardBody>
                             <CardTitle>Question Text Image</CardTitle>
                         </CardBody>
-                        <CardImg bottom src={questionImage.textUrl} alt="..."></CardImg>
+                        <CardImg bottom src={questionImage.textUrl[currentQuestionImageIndex]} alt="..."></CardImg>
                     </Card>
                 </Col>}
                 <Col>
@@ -178,13 +238,13 @@ const EditQuestion = (props) =>{
                             <FormGroup>
                                 <Input
                                 type="textarea"
-                                defaultValue={questionImage.questionText}
+                                defaultValue={questionImage.questionText[currentQuestionImageIndex]}
                                 onChange={handleTextChange}
                                 />
                             </FormGroup>
                             <Button className="btn-block" color="primary">Apply Edits</Button>
                         </CardBody>
-                        {questionImage.diagramUrl==='' && <CardFooter className="QuestionEndFooter">
+                        {questionImage.diagramUrl[currentQuestionImageIndex]==='' && <CardFooter className="QuestionEndFooter">
                             <ButtonGroup>
                                 <Button onClick={handleQuesionSubmit} >Save</Button>{' '}
                                 <Button onClick={handleQuesionSubmitAndAdd} color="success" round>Save & Add</Button>{' '}
@@ -194,7 +254,7 @@ const EditQuestion = (props) =>{
                     </Card>
                 </Col>
             </div>}
-            {questionImage.diagramUrl && <div className="row">
+            {questionImage.diagramUrl[currentQuestionImageIndex] && <div className="row">
                 <Col md="8" sm="12">
                     <Card style={{overflow:"scroll"}}>
                         <CardBody >

@@ -1,4 +1,11 @@
-export default function questionImageReducer(state = null, action)
+const question={
+    "textUrl":[],
+    "diagramUrl":[],
+    "words":[],
+    "questionText": []
+}
+
+export default function questionImageReducer(state = question, action)
 {
     switch(action.type)
     {

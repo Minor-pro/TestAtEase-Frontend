@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import {Button, Col, Progress} from "reactstrap";
 import ImageUpload from "./UploadImage";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { uploadQuestionImage } from "redux/actions/questionImageAction";
 import { getCoordinates } from "functions/QuestionIamge";
@@ -13,6 +13,7 @@ const ImagesUpload=(props)=>{
     const history = useHistory();
     const dispatch = props.dispatch;
 
+    const { user, questionImage } = useSelector((state) => ({ ...state }));
     const [textUrl,setTextUrl]=useState('');
     const [diagramUrl,setDiagramUrl]=useState('');
     const [recognizedQuestionText,setRecognizedQuestionText]=useState('');
@@ -81,12 +82,21 @@ const ImagesUpload=(props)=>{
     const ContinueToEdit=()=>{
         console.log(words)
         console.log(recognizedWords)
+        // console.log(questionImage.recognizedWords)
+        // console.log([...questionImage.textUrl,"textUrl"])
+        // console.log([...questionImage.diagramUrl,"diagramUrl"])
+        //console.log(questionImage.Words)
+        // const a=[...questionImage.recognizedWords]
+        // a.push("recognizedWords")
+        // console.log(a)
+        //console.log([...questionImage.recognizedQuestionText,"recognizedQuestionText"])
         const imagesUrl={
-            "textUrl":textUrl,
-            "diagramUrl":diagramUrl,
-            "words":recognizedWords,
-            "questionText": recognizedQuestionText
+            "textUrl":[...questionImage.textUrl,textUrl],
+            "diagramUrl":[...questionImage.diagramUrl,diagramUrl],
+            "words":[...questionImage.words,recognizedWords],
+            "questionText": [...questionImage.questionText,recognizedQuestionText]
         }
+        console.log(imagesUrl)
         dispatch(uploadQuestionImage(imagesUrl))
         history.push('/admin/edit');
     }
