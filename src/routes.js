@@ -21,12 +21,13 @@ import EditQuestion from "components/EditQuestion/EditQuestion";
 import Login from "components/Login/Login";
 import ImagesUpload from "components/UploadAndCropImage/UploadDiagramAndTextImages";
 import QuestionList from "components/QuestionList/QuestionList";
+import EditExistingQuestion from "components/EditQuestion/EditExistingQuestion";
 
 
 var routes = [
   {
     path: "/edit",
-    name: "EditQuestion",
+    name: "Edit Question",
     icon: "nc-icon nc-bank",
     component: EditQuestion,
     layout: "/admin",
@@ -51,8 +52,14 @@ var routes = [
     icon: "nc-icon nc-bank",
     component: QuestionList,
     layout: "/admin",
+  },
+  {
+    path: "/editexisting/:qid",
+    name: "Edit Existing Question",
+    icon: "nc-icon nc-bank",
+    component: EditExistingQuestion,
+    layout: "/admin",
   }
-  
   
 ];
 export default routes;

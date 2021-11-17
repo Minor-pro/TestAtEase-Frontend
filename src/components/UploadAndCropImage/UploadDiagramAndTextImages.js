@@ -20,7 +20,6 @@ const ImagesUpload=(props)=>{
     const [recognizedWords, setRecognizedWords]=useState([])
     const [loadingStage, setLoadingStage]=useState('')
     const words=[];
-
     const questionImageToText= async(textUrl)=>{
         try{
             // const result=await Tesseract.recognize(
@@ -82,14 +81,6 @@ const ImagesUpload=(props)=>{
     const ContinueToEdit=()=>{
         console.log(words)
         console.log(recognizedWords)
-        // console.log(questionImage.recognizedWords)
-        // console.log([...questionImage.textUrl,"textUrl"])
-        // console.log([...questionImage.diagramUrl,"diagramUrl"])
-        //console.log(questionImage.Words)
-        // const a=[...questionImage.recognizedWords]
-        // a.push("recognizedWords")
-        // console.log(a)
-        //console.log([...questionImage.recognizedQuestionText,"recognizedQuestionText"])
         const imagesUrl={
             "textUrl":[...questionImage.textUrl,textUrl],
             "diagramUrl":[...questionImage.diagramUrl,diagramUrl],
@@ -108,7 +99,7 @@ const ImagesUpload=(props)=>{
 
                 </Col>
                 <Col md={4} sm={12}>
-                    <Button className="btn btn-block" color="primary" onClick={ContinueToEdit} disabled={recognizedQuestionText==='' && recognizedWords==='' } >Continue to Edit</Button>
+                    <Button className="btn btn-block" color="primary" onClick={ContinueToEdit} disabled={recognizedQuestionText==='' && recognizedWords.length===0 } >Continue to Edit</Button>
                 </Col>
             </div>
             <div className="row">

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import ImageMapper from 'react-img-mapper';
 
@@ -8,25 +8,28 @@ import "./EditQuestion.css"
 import { useSelector } from "react-redux";
 
 import mergeImages from 'merge-images';
-import { addQuestion } from "functions/Question";
 
 
 import { connect } from "react-redux";
-import { useHistory } from "react-router";
+import { useHistory, useParams } from "react-router";
 import { uploadQuestionImage } from "redux/actions/questionImageAction";
 import { addTestQuestion } from "redux/actions/testAction";
 import QuestionTillNowModal from "components/Modals/QuestionTillNowModal";
+import { updateQuestion } from "functions/Question";
 
-const EditQuestion = (props) =>{
+const EditExistingQuestion = (props) =>{
 
     const history = useHistory();
     const dispatch = props.dispatch;
+    const {qid}=useParams()
 
     const { user, questionImage } = useSelector((state) => ({ ...state }));
-    const currentQuestionImageIndex= questionImage.textUrl.length-1;
+    const [currentQuestionImageIndex,setCurrentQuestionImageIndex]= useState(questionImage.index);
     const [recognizedWords,setRecognizedWords] =useState(questionImage.words[currentQuestionImageIndex])
     const [QuestionText, setQuestionText]=useState(questionImage.questionText[currentQuestionImageIndex])
     const [diagramImage, setDiagramImage]=useState(questionImage.diagramUrl[currentQuestionImageIndex]);
+    
+    console.log(questionImage.index,(QuestionText.length-1),currentQuestionImageIndex,recognizedWords,QuestionText)
     const [edits,setEdits] = useState([]);
     const [topicTags, setTopicTags] = useState('');
     const [inTest, setInTest]=useState(false);
@@ -130,7 +133,7 @@ const EditQuestion = (props) =>{
         setTopicTags(e.target.value.split(", "))
     }
 
-    const handleAddMore=(e)=>{
+    const handleNext=(e)=>{
         e.preventDefault();
         const textTillNow=[...questionImage.questionText];
         textTillNow[currentQuestionImageIndex]=QuestionText;
@@ -142,11 +145,15 @@ const EditQuestion = (props) =>{
             "textUrl":[...questionImage.textUrl],
             "diagramUrl":diagramsTillNow,
             "words":recognizedWordsTillNow,
-            "questionText": textTillNow
+            "questionText": textTillNow,
+            "index":questionImage.index+1
         }
         console.log(imagesUrl)
         dispatch(uploadQuestionImage(imagesUrl))
-        history.push("/admin/upload-crop")
+        setCurrentQuestionImageIndex(questionImage.index)
+        // history.push("/admin/upload-crop")
+        // history.goBack();
+        history.go(0);
     }
 
     const handleQuesionSubmit=(e)=>{
@@ -157,7 +164,8 @@ const EditQuestion = (props) =>{
         diagramsTillNow[currentQuestionImageIndex]=diagramImage;
         const recognizedWordsTillNow=[...questionImage.words];
         recognizedWordsTillNow[currentQuestionImageIndex]=recognizedWords;
-        addQuestion(user, textTillNow, diagramsTillNow, topicTags, recognizedWordsTillNow)
+        console.log(qid, textTillNow, diagramsTillNow, topicTags, recognizedWordsTillNow)
+        updateQuestion(qid, textTillNow, diagramsTillNow, topicTags, recognizedWordsTillNow)
         .then(res=>{
             console.log(res)
             dispatch(uploadQuestionImage({
@@ -180,7 +188,7 @@ const EditQuestion = (props) =>{
         diagramsTillNow[currentQuestionImageIndex]=diagramImage;
         const recognizedWordsTillNow=[...questionImage.words];
         recognizedWordsTillNow[currentQuestionImageIndex]=recognizedWords;
-        addQuestion(user, textTillNow, diagramsTillNow, topicTags, recognizedWordsTillNow)
+        updateQuestion(textTillNow, diagramsTillNow, topicTags, recognizedWordsTillNow)
         .then(res=>{
             console.log(res)
             dispatch(addTestQuestion(res['data']['question']))
@@ -205,7 +213,9 @@ const EditQuestion = (props) =>{
         }))
         history.push("/admin/upload-crop")
     }
+    useEffect(()=>{
 
+    },[currentQuestionImageIndex])
     return( 
         <div className="content">
             <div className="row flex-column-reverse flex-md-row">
@@ -214,7 +224,7 @@ const EditQuestion = (props) =>{
                     <QuestionTillNowModal modal={modal} toggle={toggleModal} questionImage={questionImage}/>
                 </Col>
                 <Col md="3" sm="0">
-                    <Button className="AddMoreButton btn-block" size="lg" color="success" onClick={handleAddMore}>Add More</Button>{' '}
+                    {questionImage.index!==(questionImage.questionText.length-1) && <Button className="NextButton btn-block" size="lg" color="success" onClick={handleNext}>Next</Button>}
                 </Col>
                 <Col md="3" sm="0">
                 </Col>
@@ -263,6 +273,7 @@ const EditQuestion = (props) =>{
                             <CardBody >
                                 <CardTitle>Question Diagram Image</CardTitle>
                             </CardBody>
+                            {recognizedWords,QuestionText}
                             <ImageMapper src={diagramImage} map={AREAS_MAP} onClick={(area)=>clickedZone(area)}  />
                         </Card>
                     </Col>
@@ -306,4 +317,5 @@ const EditQuestion = (props) =>{
         </div>
     )
 }
-export default connect()(EditQuestion);
+
+export default connect()(EditExistingQuestion);

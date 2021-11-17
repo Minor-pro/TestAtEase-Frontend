@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import QuestionListCard from "./QuestionListCard";
-import axios from "axios";
 import { useSelector } from "react-redux";
 import { connect } from "react-redux";
 import { useHistory } from "react-router";
 import { uploadQuestionImage } from "redux/actions/questionImageAction";
+import { listAllQuestions } from "functions/Question";
 
 
 const QuestionList=(props)=>{
@@ -19,22 +19,18 @@ const QuestionList=(props)=>{
     const ContinueToEdit=()=>{
         console.log(questionToEdit)
         const imagesUrl={
-            "textUrl":'',
-            "diagramUrl":questionToEdit ? questionToEdit.images : '',
-            "words":questionToEdit ? questionToEdit.recognizedWords : '',
-            "questionText": questionToEdit ? questionToEdit.text : ''
+            "textUrl":questionToEdit ? questionToEdit.text.map(()=>''):[],
+            "diagramUrl":questionToEdit ? questionToEdit.images : [],
+            "words":questionToEdit ? questionToEdit.recognizedWords : [],
+            "questionText": questionToEdit ? questionToEdit.text : [],
+            "index":0
         }
         console.log(imagesUrl)
         dispatch(uploadQuestionImage(imagesUrl))
-        history.push('/admin/edit');
+        history.push(`/admin/editexisting/${questionToEdit.id}`)
     }
     const loadAllQuestion=async()=>{
-        console.log( `${process.env.REACT_APP_API}/list/${user.email}`)
-        await axios({
-            method: "get",
-            url: `${process.env.REACT_APP_API}/list/${user.email}`,
-            headers: { "Content-Type": "application/json" },
-        })
+        listAllQuestions(user)
         .then(res=>{
           setAllQuestions(res['data'])
         })
@@ -55,7 +51,7 @@ const QuestionList=(props)=>{
             
             <div class="row row-cols-1 row-cols-md-3 g-4">
             {allQuestions.length>0 && allQuestions.map((question)=>(
-                <div class="col">
+                <div key= {question.id}class="col">
                     <QuestionListCard question={question} setQuestionToEdit={setQuestionToEdit} edit={ContinueToEdit} questionToEdit={questionToEdit}/>
                 </div>
             ))}            

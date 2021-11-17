@@ -18,14 +18,14 @@ const QuestionTillNowModal=({modal, toggle, questionImage})=>{
             <ModalHeader toggle={toggle} >
             </ModalHeader>
             <ModalBody>
-                {/* {questionImage.diagramUrl.map((questionPart, index)=>(
+                {questionImage.diagramUrl.map((questionPart, index)=>(
                         <div>
                             <img src={questionPart}/>
                             <br/>
                             <p>{questionImage.questionText[index]}</p>
                         </div>
-                ))} */}
-                <Carousel renderThumbs={genrateThumbs}>
+                ))}
+                {/* <Carousel renderThumbs={genrateThumbs}>
                     {questionImage.diagramUrl.map((questionPart, index)=>(
                         <div>
                             <img src={questionPart}/>
@@ -33,7 +33,7 @@ const QuestionTillNowModal=({modal, toggle, questionImage})=>{
                             <p>{questionImage.questionText[index]}</p>
                         </div>
                     ))}
-                </Carousel>
+                </Carousel> */}
             </ModalBody>
         </Modal>
     )
