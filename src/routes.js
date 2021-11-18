@@ -22,6 +22,8 @@ import Login from "components/Login/Login";
 import ImagesUpload from "components/UploadAndCropImage/UploadDiagramAndTextImages";
 import QuestionList from "components/QuestionList/QuestionList";
 import EditExistingQuestion from "components/EditQuestion/EditExistingQuestion";
+import TeacherDashboard from "components/TeacherDashboard/TeacherDashboard";
+import TestDashboard from "components/TestDashboard/TestDashboard";
 
 
 var routes = [
@@ -59,7 +61,20 @@ var routes = [
     icon: "nc-icon nc-bank",
     component: EditExistingQuestion,
     layout: "/admin",
-  }
-  
+  },
+  {
+    path: "/teacherdashboard",
+    name: "Dashboard",
+    icon: "nc-icon nc-bank",
+    component: TeacherDashboard,
+    layout: "/admin",
+  },
+  {
+    path: "/testdashboard",
+    name: "Test Dashboard",
+    icon: "nc-icon nc-bank",
+    component: TestDashboard,
+    layout: "/admin",
+  },
 ];
 export default routes;

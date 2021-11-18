@@ -127,7 +127,7 @@ const EditQuestion = (props) =>{
             });      
     };
     const handleTopicTagChange=(e)=>{
-        setTopicTags(e.target.value.split(", "))
+        setTopicTags(e.target.value.toLowerCase().split(", "))
     }
 
     const handleAddMore=(e)=>{

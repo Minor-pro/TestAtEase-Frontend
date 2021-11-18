@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {Button, Col, Progress} from "reactstrap";
+import {Button, Col, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Progress} from "reactstrap";
 import ImageUpload from "./UploadImage";
 import { connect, useSelector } from "react-redux";
 import { useHistory } from "react-router";
@@ -96,7 +96,7 @@ const ImagesUpload=(props)=>{
         <div className="content">
             <div className="row">
                 <Col md={8}>
-
+                    
                 </Col>
                 <Col md={4} sm={12}>
                     <Button className="btn btn-block" color="primary" onClick={ContinueToEdit} disabled={recognizedQuestionText==='' && recognizedWords.length===0 } >Continue to Edit</Button>
