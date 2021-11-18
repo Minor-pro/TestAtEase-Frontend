@@ -53,13 +53,8 @@ var routes = [
     name: "My Questions",
     icon: "nc-icon nc-bank",
     component: QuestionList,
-    layout: "/admin",
+    layout: "/admin"
   },
-<<<<<<< HEAD
- 
-  
-  
-=======
   {
     path: "/editexisting/:qid",
     name: "Edit Existing Question",
@@ -81,6 +76,5 @@ var routes = [
     component: TestDashboard,
     layout: "/admin",
   },
->>>>>>> 012a8ddce40442d156fb62d4fe64d7299d6b5c18
 ];
 export default routes;
