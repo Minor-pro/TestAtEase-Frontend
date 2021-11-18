@@ -1,3 +1,4 @@
+import EditExistingQuestion from "components/EditQuestion/EditExistingQuestion";
 import EditQuestion from "components/EditQuestion/EditQuestion";
 import Login from "components/Login/Login";
 import QuestionList from "components/QuestionList/QuestionList";
@@ -15,7 +16,8 @@ const App = (props) => {
             <Route path="/login" component={Login}/>
             <Route path="/upload-crop" component={ImagesUpload}/>
             <Route path="/edit" component={EditQuestion}/>
-            <Route path = "/list" componen={QuestionList} />
+            <Route path = "/list" componen={QuestionList} />            
+            <Route path="/editexisting/:qid" component={EditExistingQuestion}/>
         </Switch>
     </div>
 }

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import {Button, Col, Progress} from "reactstrap";
+import {Button, Col, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Progress} from "reactstrap";
 import ImageUpload from "./UploadImage";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { uploadQuestionImage } from "redux/actions/questionImageAction";
 import { getCoordinates } from "functions/QuestionIamge";
@@ -13,13 +13,13 @@ const ImagesUpload=(props)=>{
     const history = useHistory();
     const dispatch = props.dispatch;
 
+    const { user, questionImage } = useSelector((state) => ({ ...state }));
     const [textUrl,setTextUrl]=useState('');
     const [diagramUrl,setDiagramUrl]=useState('');
     const [recognizedQuestionText,setRecognizedQuestionText]=useState('');
     const [recognizedWords, setRecognizedWords]=useState([])
     const [loadingStage, setLoadingStage]=useState('')
     const words=[];
-
     const questionImageToText= async(textUrl)=>{
         try{
             // const result=await Tesseract.recognize(
@@ -82,11 +82,12 @@ const ImagesUpload=(props)=>{
         console.log(words)
         console.log(recognizedWords)
         const imagesUrl={
-            "textUrl":textUrl,
-            "diagramUrl":diagramUrl,
-            "words":recognizedWords,
-            "questionText": recognizedQuestionText
+            "textUrl":[...questionImage.textUrl,textUrl],
+            "diagramUrl":[...questionImage.diagramUrl,diagramUrl],
+            "words":[...questionImage.words,recognizedWords],
+            "questionText": [...questionImage.questionText,recognizedQuestionText]
         }
+        console.log(imagesUrl)
         dispatch(uploadQuestionImage(imagesUrl))
         history.push('/admin/edit');
     }
@@ -95,10 +96,10 @@ const ImagesUpload=(props)=>{
         <div className="content">
             <div className="row">
                 <Col md={8}>
-
+                    
                 </Col>
                 <Col md={4} sm={12}>
-                    <Button className="btn btn-block" color="primary" onClick={ContinueToEdit} disabled={recognizedQuestionText==='' && recognizedWords==='' } >Continue to Edit</Button>
+                    <Button className="btn btn-block" color="primary" onClick={ContinueToEdit} disabled={recognizedQuestionText==='' && recognizedWords.length===0 } >Continue to Edit</Button>
                 </Col>
             </div>
             <div className="row">

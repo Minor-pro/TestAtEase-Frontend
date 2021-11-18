@@ -21,12 +21,15 @@ import EditQuestion from "components/EditQuestion/EditQuestion";
 import Login from "components/Login/Login";
 import ImagesUpload from "components/UploadAndCropImage/UploadDiagramAndTextImages";
 import QuestionList from "components/QuestionList/QuestionList";
+import EditExistingQuestion from "components/EditQuestion/EditExistingQuestion";
+import TeacherDashboard from "components/TeacherDashboard/TeacherDashboard";
+import TestDashboard from "components/TestDashboard/TestDashboard";
 
 
 var routes = [
   {
     path: "/edit",
-    name: "EditQuestion",
+    name: "Edit Question",
     icon: "nc-icon nc-bank",
     component: EditQuestion,
     layout: "/admin",
@@ -52,8 +55,32 @@ var routes = [
     component: QuestionList,
     layout: "/admin",
   },
+<<<<<<< HEAD
  
   
   
+=======
+  {
+    path: "/editexisting/:qid",
+    name: "Edit Existing Question",
+    icon: "nc-icon nc-bank",
+    component: EditExistingQuestion,
+    layout: "/admin",
+  },
+  {
+    path: "/teacherdashboard",
+    name: "Dashboard",
+    icon: "nc-icon nc-bank",
+    component: TeacherDashboard,
+    layout: "/admin",
+  },
+  {
+    path: "/testdashboard",
+    name: "Test Dashboard",
+    icon: "nc-icon nc-bank",
+    component: TestDashboard,
+    layout: "/admin",
+  },
+>>>>>>> 012a8ddce40442d156fb62d4fe64d7299d6b5c18
 ];
 export default routes;
