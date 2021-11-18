@@ -51,7 +51,8 @@ var routes = [
     icon: "nc-icon nc-bank",
     component: QuestionList,
     layout: "/admin",
-  }
+  },
+ 
   
   
 ];

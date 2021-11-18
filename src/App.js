@@ -12,7 +12,7 @@ const App = (props) => {
     return <div>
         <Switch>
             <Route path="/" render={(props)=> <Dashboard {...props}/>}/>
-            <Route path="/login" componrnt={Login}/>
+            <Route path="/login" component={Login}/>
             <Route path="/upload-crop" component={ImagesUpload}/>
             <Route path="/edit" component={EditQuestion}/>
             <Route path = "/list" componen={QuestionList} />
