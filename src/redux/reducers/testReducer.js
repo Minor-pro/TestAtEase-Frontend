@@ -9,21 +9,18 @@ export default function testReducer(state = initialState, action)
     {
         case "TEST_QUESTION_ADDED":
             return { 
-                ...initialState,
-                test:state.test,
+                ...state,
                 questions: [...state.questions, action.payload]
             };
         case "TEST_QUESTION_REMOVED":
             return { 
-                ...initialState,
-                test:state.test,
+                ...state,
                 questions: action.payload
             };
         case "CREATE_TEST":
             return{
-                ...initialState,
+                ...state,
                 test: action.payload,
-                questions: [...state.questions]
             }
         default:
             return state;
