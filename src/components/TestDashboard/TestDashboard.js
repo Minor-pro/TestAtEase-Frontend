@@ -1,15 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {Button, Card, CardTitle, CardImg, Col, CardBody} from "reactstrap";
 import searchImg from "../../assets/img/search.png";
 import quesImg from "../../assets/img/question.png";
-import { useSelector } from "react-redux";
-import QuestionListCard from "components/QuestionList/QuestionListCard";
+import { useDispatch, useSelector } from "react-redux";
 import TestQuestionListCard from "components/QuestionList/TestQuestionListCard";
 import { useHistory } from "react-router";
+import { addTestQuestion } from "redux/actions/testAction";
+import { removeQuestionFromTest } from "redux/actions/testAction";
 
 const TestDashboard=()=>{
 
     const history=useHistory();
+    const dispatch=useDispatch();
 
     const { test} = useSelector((state) => ({ ...state }));
     const {questions}=test;
@@ -20,6 +22,29 @@ const TestDashboard=()=>{
     const add=()=>{
         history.push("/admin/upload-crop")
     }
+    const [questionToRemove, setQuestionToRemove]=useState();
+
+    const removeTestQuestion=()=>{
+        console.log(questionToRemove)
+        const testQuestionsArrayCopy=questions;
+        var newTestQuestions = testQuestionsArrayCopy.filter(question=> question!=questionToRemove); 
+        dispatch(removeQuestionFromTest(newTestQuestions));
+        history.go(0);
+        // const imagesUrl={
+        //     "textUrl":questionToEdit ? questionToEdit.text.map(()=>''):[],
+        //     "diagramUrl":questionToEdit ? questionToEdit.images : [],
+        //     "words":questionToEdit ? questionToEdit.recognizedWords : [],
+        //     "questionText": questionToEdit ? questionToEdit.text : [],
+        //     "index":0
+        // }
+        // console.log(imagesUrl)
+        // dispatch(uploadQuestionImage(imagesUrl))
+        // history.push(`/admin/editexisting/${questionToEdit.id}`)
+    }
+    useEffect(()=>{
+        console.log(questionToRemove)
+        if(questionToRemove)removeTestQuestion()
+    },[questionToRemove]) // eslint-disable-line react-hooks/exhaustive-deps
     return (
         <div className="content">
             <div className="row">
@@ -60,7 +85,7 @@ const TestDashboard=()=>{
             <div class="row row-cols-1 row-cols-md-3 g-4">
             {questions.length>0 && questions.map((question)=>(
                 <div key= {question.id}class="col">
-                    <TestQuestionListCard question={question}/>
+                    <TestQuestionListCard question={question} setQuestionToRemove={setQuestionToRemove} remove={removeTestQuestion} questionToRemove={questionToRemove}/>
                 </div>
             ))}            
             </div>

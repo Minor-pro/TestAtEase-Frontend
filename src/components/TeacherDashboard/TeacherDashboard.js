@@ -5,9 +5,12 @@ import testImg from "../../assets/img/test.png";
 import quesImg from "../../assets/img/question.png";
 import "./TeacherDashboard.css"
 import { useHistory } from "react-router";
+import { useDispatch } from "react-redux";
+import { createTest } from "redux/actions/testAction";
 
 const TeacherDashboard=()=>{
     const history=useHistory();
+    const dispatch=useDispatch();
 
     const search=()=>{
         history.push("/admin/list")
@@ -16,6 +19,7 @@ const TeacherDashboard=()=>{
         history.push("/admin/upload-crop")
     }
     const makeTest=()=>{
+        dispatch(createTest(true));
         history.push("/admin/testdashboard")
     }
     return (

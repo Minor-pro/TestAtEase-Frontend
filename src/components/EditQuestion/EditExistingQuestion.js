@@ -23,7 +23,7 @@ const EditExistingQuestion = (props) =>{
     const dispatch = props.dispatch;
     const {qid}=useParams()
 
-    const { user, questionImage } = useSelector((state) => ({ ...state }));
+    const { user, questionImage, test } = useSelector((state) => ({ ...state }));
     const [currentQuestionImageIndex,setCurrentQuestionImageIndex]= useState(questionImage.index);
     const [recognizedWords,setRecognizedWords] =useState(questionImage.words[currentQuestionImageIndex])
     const [QuestionText, setQuestionText]=useState(questionImage.questionText[currentQuestionImageIndex])
@@ -31,7 +31,7 @@ const EditExistingQuestion = (props) =>{
     
     console.log(questionImage.index,(QuestionText.length-1),currentQuestionImageIndex,recognizedWords,QuestionText)
     const [edits,setEdits] = useState([]);
-    const [topicTags, setTopicTags] = useState('');
+    const [topicTags, setTopicTags] = useState(questionImage.topicTags);
     const [inTest, setInTest]=useState(false);
     
     const [modal, setModal] = useState(false);
@@ -174,7 +174,7 @@ const EditExistingQuestion = (props) =>{
                 "words":[],
                 "questionText": []
             }))
-            history.push("/admin/upload-crop")
+            test && test.test ? history.push("/admin/testdashboard") : history.push("/admin/upload-crop")
         })
         .catch(err=>{
             console.log(err);
@@ -188,17 +188,16 @@ const EditExistingQuestion = (props) =>{
         diagramsTillNow[currentQuestionImageIndex]=diagramImage;
         const recognizedWordsTillNow=[...questionImage.words];
         recognizedWordsTillNow[currentQuestionImageIndex]=recognizedWords;
-        updateQuestion(textTillNow, diagramsTillNow, topicTags, recognizedWordsTillNow)
+        updateQuestion(qid,textTillNow, diagramsTillNow, topicTags, recognizedWordsTillNow)
         .then(res=>{
-            console.log(res)
-            dispatch(addTestQuestion(res['data']['question']))
+            dispatch(addTestQuestion(res['data']))
             dispatch(uploadQuestionImage({
                 "textUrl":[],
                 "diagramUrl":[],
                 "words":[],
                 "questionText": []
             }))
-            history.push("/admin/upload-crop")
+            test && test.test ? history.push("/admin/testdashboard") : history.push("/admin/upload-crop")
         })
         .catch(err=>{
             console.log(err);
@@ -211,7 +210,7 @@ const EditExistingQuestion = (props) =>{
             "words":[],
             "questionText": []
         }))
-        history.push("/admin/upload-crop")
+        test && test.test ? history.push("/admin/testdashboard") : history.push("/admin/upload-crop")
     }
     useEffect(()=>{
 
@@ -256,11 +255,11 @@ const EditExistingQuestion = (props) =>{
                                 <Button className="btn-block" color="primary">Apply Edits</Button>
                             </CardBody>
                             {questionImage.diagramUrl[currentQuestionImageIndex]==='' && <CardFooter className="QuestionEndFooter">
-                                <Input type="text" placeholder="Comma Seperated Topic Tags" onChange={handleTopicTagChange} required/>
+                                <Input type="text" placeholder="Comma Seperated Topic Tags" onChange={handleTopicTagChange} defaultValue={questionImage.topicTags} required/>
                                 <br/>
                                 <ButtonGroup>
                                     <Button type="submit" onClick={()=>setInTest(false)} >Save</Button>{' '}
-                                    <Button type="submit" onClick={()=>setInTest(true)} color="success" round>Save & Add</Button>{' '}
+                                    {test && test.test && <Button type="submit" onClick={()=>setInTest(true)} color="success" round>Save & Add</Button>}{' '}
                                     <Button onClick={handleCancel} color="danger" round>Cancel</Button>{' '}
                                 </ButtonGroup>
                             </CardFooter>}
@@ -298,13 +297,13 @@ const EditExistingQuestion = (props) =>{
                                 {edits.length>0 && 
                                     <Button className="btn-block" color="primary" onClick={applyEdits}>Apply Edits</Button>
                                 }
-                                <Input type="text" placeholder="Comma Seperated Topic Tags" onChange={handleTopicTagChange} required/>
+                                <Input type="text" placeholder="Comma Seperated Topic Tags" onChange={handleTopicTagChange} defaultValue={questionImage.topicTags} required/>
                                 
                             </CardBody>
                             <CardFooter className="QuestionEndFooter">
                                 <ButtonGroup>
                                     <Button type="submit" onClick={()=>setInTest(false)} >Save</Button>{' '}
-                                    <Button type="submit" onClick={()=>setInTest(true)} color="success" round>Save & Add</Button>{' '}
+                                    {test && test.test && <Button type="submit" onClick={()=>setInTest(true)} color="success" round>Save & Add</Button>}{' '}
                                     <Button onClick={handleCancel} color="danger" round>Cancel</Button>{' '}
                                 </ButtonGroup>
                                 <canvas hidden id="textImage" width="200" height="200"></canvas>

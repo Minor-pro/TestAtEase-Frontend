@@ -1,4 +1,6 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router";
 import { Link, useLocation } from "react-router-dom";
 import {
   Collapse,
@@ -17,12 +19,20 @@ import {
   InputGroupAddon,
   Input,
 } from "reactstrap";
+import { loginUser } from "redux/actions/userAction";
 
 import routes from "routes.js";
 
 //import Logo from "../../assets/img/TestAtEaseLogo.png";
 
 function Header(props) {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const logout = () => {
+      dispatch(loginUser());
+      history.push("/login")
+  }
+
   const [isOpen, setIsOpen] = React.useState(false);
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
   const [color, setColor] = React.useState("transparent");
@@ -111,7 +121,7 @@ function Header(props) {
           <span className="navbar-toggler-bar navbar-kebab" />
         </NavbarToggler>
         <Collapse isOpen={isOpen} navbar className="justify-content-end">
-          <form>
+          {/* <form>
             <InputGroup className="no-border">
               <Input placeholder="Search..." />
               <InputGroupAddon addonType="append">
@@ -120,9 +130,9 @@ function Header(props) {
                 </InputGroupText>
               </InputGroupAddon>
             </InputGroup>
-          </form>
+          </form> */}
           <Nav navbar>
-            <NavItem>
+            {/* <NavItem>
               <Link to="#pablo" className="nav-link btn-magnify">
                 <i className="nc-icon nc-layout-11" />
                 <p>
@@ -146,12 +156,13 @@ function Header(props) {
                 <DropdownItem tag="a">Another Action</DropdownItem>
                 <DropdownItem tag="a">Something else here</DropdownItem>
               </DropdownMenu>
-            </Dropdown>
+            </Dropdown> */}
             <NavItem>
-              <Link to="#pablo" className="nav-link btn-rotate">
-                <i className="nc-icon nc-settings-gear-65" />
+              <Link onClick ={logout} className="nav-link btn-rotate">
+                {/* <i className="nc-icon nc-settings-gear-65" /> */}
+                <i class="fas fa-sign-out-alt"></i>
                 <p>
-                  <span className="d-lg-none d-md-block">Account</span>
+                  <span className="d-lg-none d-md-block">Logout</span>
                 </p>
               </Link>
             </NavItem>

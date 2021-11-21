@@ -7,6 +7,7 @@ import { uploadQuestionImage } from "redux/actions/questionImageAction";
 import { listAllQuestions } from "functions/Question";
 import Search from "components/Search/search";
 import axios from "axios";
+import { searchQuestions } from "redux/actions/searchAction";
 
 
 const QuestionList=(props)=>{
@@ -27,10 +28,12 @@ const QuestionList=(props)=>{
             "diagramUrl":questionToEdit ? questionToEdit.images : [],
             "words":questionToEdit ? questionToEdit.recognizedWords : [],
             "questionText": questionToEdit ? questionToEdit.text : [],
+            "topicTags" : questionToEdit ? questionToEdit.topicTags.join(", ") : '',
             "index":0
         }
         console.log(imagesUrl)
         dispatch(uploadQuestionImage(imagesUrl))
+        dispatch(searchQuestions({text:""}));
         history.push(`/admin/editexisting/${questionToEdit.id}`)
     }
     const loadAllQuestion=async()=>{

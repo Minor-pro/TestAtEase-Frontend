@@ -2,29 +2,25 @@ import React from "react";
 import GoogleLogin from "react-google-login";
 import { connect } from "react-redux";
 import { loginUser } from "redux/actions/userAction";
-import axios from 'axios'; 
 import web from "./landingimage.svg"; 
 import "./Login.css"
+import { useHistory } from "react-router";
+import { loginAndAddUser } from "functions/auth";
 //import { useHistory } from "react-router-dom";
 
 const Login=(props)=>{
     //const history = useHistory();
     const dispatch = props.dispatch;
+    const history = useHistory();
     const login = async (res) => {
         var user = res.profileObj;
-        console.log(res)
+        loginAndAddUser(user)
         try {
-            await axios({
-                method: "post",
-                url: `${process.env.REACT_APP_API}/login`,
-                data: { name: user.name, email: user.email },
-                headers: { "Content-Type": "application/json" },
-            });
-            //history.push('/')
+            dispatch(loginUser(user));
+            history.push("/admin/teacherdashboard")
         } catch (e) {
             console.log(e);
         }
-        dispatch(loginUser(user));
     }
     return ( 
         
@@ -43,7 +39,6 @@ const Login=(props)=>{
                                  clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
                                  buttonText="Login with Google"
                                  onSuccess={login}
-                                 isSignedIn={true}
                                 cookiePolicy={"single_host_origin"}
                                 className="btn-get-started"
                             />

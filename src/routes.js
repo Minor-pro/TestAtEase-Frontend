@@ -42,13 +42,6 @@ var routes = [
     layout: "/admin",
   },
   {
-    path: "/login",
-    name: "Login",
-    icon: "nc-icon nc-bank",
-    component: Login,
-    layout: "/admin",
-  },
-  {
     path: "/list",
     name: "My Questions",
     icon: "nc-icon nc-bank",

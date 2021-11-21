@@ -22,7 +22,7 @@ const EditQuestion = (props) =>{
     const history = useHistory();
     const dispatch = props.dispatch;
 
-    const { user, questionImage } = useSelector((state) => ({ ...state }));
+    const { user, questionImage, test } = useSelector((state) => ({ ...state }));
     const currentQuestionImageIndex= questionImage.textUrl.length-1;
     const [recognizedWords,setRecognizedWords] =useState(questionImage.words[currentQuestionImageIndex])
     const [QuestionText, setQuestionText]=useState(questionImage.questionText[currentQuestionImageIndex])
@@ -166,7 +166,7 @@ const EditQuestion = (props) =>{
                 "words":[],
                 "questionText": []
             }))
-            history.push("/admin/upload-crop")
+            test && test.test ? history.push("/admin/testdashboard") : history.push("/admin/upload-crop")
         })
         .catch(err=>{
             console.log(err);
@@ -190,7 +190,7 @@ const EditQuestion = (props) =>{
                 "words":[],
                 "questionText": []
             }))
-            history.push("/admin/upload-crop")
+            test && test.test ? history.push("/admin/testdashboard") : history.push("/admin/upload-crop")
         })
         .catch(err=>{
             console.log(err);
@@ -203,7 +203,7 @@ const EditQuestion = (props) =>{
             "words":[],
             "questionText": []
         }))
-        history.push("/admin/upload-crop")
+        test && test.test ? history.push("/admin/testdashboard") : history.push("/admin/upload-crop")
     }
 
     return( 
@@ -250,7 +250,7 @@ const EditQuestion = (props) =>{
                                 <br/>
                                 <ButtonGroup>
                                     <Button type="submit" onClick={()=>setInTest(false)} >Save</Button>{' '}
-                                    <Button type="submit" onClick={()=>setInTest(true)} color="success" round>Save & Add</Button>{' '}
+                                    {test && test.test && <Button type="submit" onClick={()=>setInTest(true)} color="success" round>Save & Add</Button>}{' '}
                                     <Button onClick={handleCancel} color="danger" round>Cancel</Button>{' '}
                                 </ButtonGroup>
                             </CardFooter>}
@@ -293,7 +293,7 @@ const EditQuestion = (props) =>{
                             <CardFooter className="QuestionEndFooter">
                                 <ButtonGroup>
                                     <Button type="submit" onClick={()=>setInTest(false)} >Save</Button>{' '}
-                                    <Button type="submit" onClick={()=>setInTest(true)} color="success" round>Save & Add</Button>{' '}
+                                    {test && test.test && <Button type="submit" onClick={()=>setInTest(true)} color="success" round>Save & Add</Button>}{' '}
                                     <Button onClick={handleCancel} color="danger" round>Cancel</Button>{' '}
                                 </ButtonGroup>
                                 <canvas hidden id="textImage" width="200" height="200"></canvas>

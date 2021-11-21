@@ -5,19 +5,19 @@ import QuestionList from "components/QuestionList/QuestionList";
 import ImagesUpload from "components/UploadAndCropImage/UploadDiagramAndTextImages";
 import Dashboard from "pages/Dashboard/Dashboard";
 import React from "react";
-import {Switch, Route} from "react-router-dom";
+import {Switch, Route, Redirect} from "react-router-dom";
 
 
 
 const App = (props) => {
     return <div>
         <Switch>
-            <Route path="/" render={(props)=> <Dashboard {...props}/>}/>
             <Route path="/login" component={Login}/>
-            <Route path="/upload-crop" component={ImagesUpload}/>
+            <Route path="/" render={(props)=> <Dashboard {...props}/>}/>
+            {/* <Route path="/upload-crop" component={ImagesUpload}/>
             <Route path="/edit" component={EditQuestion}/>
             <Route path = "/list" componen={QuestionList} />            
-            <Route path="/editexisting/:qid" component={EditExistingQuestion}/>
+            <Route path="/editexisting/:qid" component={EditExistingQuestion}/> */}
         </Switch>
     </div>
 }
