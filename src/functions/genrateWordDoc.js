@@ -10,17 +10,14 @@ export const generateDoc=(testQuestions, fileName)=>{
             children: [new TextRun({text:`Question ${qi+1}:`, bold:true})],
         }))
         q.images.forEach((image,i)=>{
+            // let imgWidth = 0;
+            // let imgHeight = 0;
             const img = new Image();
                 img.src = image;
-                img.onload = function() {
-                    imgWidth = img.naturalWidth;
-                    imgHeight = img.naturalHeight;
-                }
-            let imgWidth = 0;
-            let imgHeight = 0;
-            if(q.images[i]){
-                
-            }
+                // img.onload = function() {
+                //     imgWidth = img.naturalWidth;
+                //     imgHeight = img.naturalHeight;
+                // }
             child.push(new Paragraph(q.text[i]));
             child.push(
                 new Paragraph({

@@ -18,7 +18,6 @@
 */
 
 import EditQuestion from "components/EditQuestion/EditQuestion";
-import Login from "components/Login/Login";
 import ImagesUpload from "components/UploadAndCropImage/UploadDiagramAndTextImages";
 import QuestionList from "components/QuestionList/QuestionList";
 import EditExistingQuestion from "components/EditQuestion/EditExistingQuestion";

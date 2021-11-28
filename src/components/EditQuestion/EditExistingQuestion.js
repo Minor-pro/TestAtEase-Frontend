@@ -23,13 +23,12 @@ const EditExistingQuestion = (props) =>{
     const dispatch = props.dispatch;
     const {qid}=useParams()
 
-    const { user, questionImage, test } = useSelector((state) => ({ ...state }));
+    const { questionImage, test } = useSelector((state) => ({ ...state }));
     const [currentQuestionImageIndex,setCurrentQuestionImageIndex]= useState(questionImage.index);
     const [recognizedWords,setRecognizedWords] =useState(questionImage.words[currentQuestionImageIndex])
     const [QuestionText, setQuestionText]=useState(questionImage.questionText[currentQuestionImageIndex])
     const [diagramImage, setDiagramImage]=useState(questionImage.diagramUrl[currentQuestionImageIndex]);
     
-    console.log(questionImage.index,(QuestionText.length-1),currentQuestionImageIndex,recognizedWords,QuestionText)
     const [edits,setEdits] = useState([]);
     const [topicTags, setTopicTags] = useState(questionImage.topicTags);
     const [inTest, setInTest]=useState(false);
@@ -64,7 +63,6 @@ const EditExistingQuestion = (props) =>{
         })
     }
     const removeEdit=(coord)=>{
-        //console.log(edits)
         setEdits(prev=>prev.filter((o)=>o.coords!==coord))
     }
     const handleEditChange = (e) => {
@@ -113,15 +111,12 @@ const EditExistingQuestion = (props) =>{
         })  
         mergeImages(textImages)
             .then(editedImage => {
-                //console.log(editedImage);
                 setDiagramImage(editedImage);
                 let questionImageWordCopy=questionImage.words[currentQuestionImageIndex];
                 edits.forEach(edit=>{
                     questionImageWordCopy.forEach(word=>{
                         if(word['Left']===edit.coords[0] && word['Top']===edit.coords[1]) {
-                            //console.log(word)
-                            word['WordText']=edit['replacement'];                 
-                            //console.log(word)      
+                            word['WordText']=edit['replacement'];    
                         }
                     })
                 })
@@ -148,11 +143,8 @@ const EditExistingQuestion = (props) =>{
             "questionText": textTillNow,
             "index":questionImage.index+1
         }
-        console.log(imagesUrl)
         dispatch(uploadQuestionImage(imagesUrl))
         setCurrentQuestionImageIndex(questionImage.index)
-        // history.push("/admin/upload-crop")
-        // history.goBack();
         history.go(0);
     }
 
@@ -164,10 +156,8 @@ const EditExistingQuestion = (props) =>{
         diagramsTillNow[currentQuestionImageIndex]=diagramImage;
         const recognizedWordsTillNow=[...questionImage.words];
         recognizedWordsTillNow[currentQuestionImageIndex]=recognizedWords;
-        console.log(qid, textTillNow, diagramsTillNow, topicTags, recognizedWordsTillNow)
         updateQuestion(qid, textTillNow, diagramsTillNow, topicTags, recognizedWordsTillNow)
         .then(res=>{
-            console.log(res)
             dispatch(uploadQuestionImage({
                 "textUrl":[],
                 "diagramUrl":[],
@@ -272,7 +262,6 @@ const EditExistingQuestion = (props) =>{
                             <CardBody >
                                 <CardTitle>Question Diagram Image</CardTitle>
                             </CardBody>
-                            {recognizedWords,QuestionText}
                             <ImageMapper src={diagramImage} map={AREAS_MAP} onClick={(area)=>clickedZone(area)}  />
                         </Card>
                     </Col>

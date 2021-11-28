@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {Button, Col, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Progress} from "reactstrap";
+import {Button, Col, Progress} from "reactstrap";
 import ImageUpload from "./UploadImage";
 import { connect, useSelector } from "react-redux";
 import { useHistory } from "react-router";
@@ -13,7 +13,7 @@ const ImagesUpload=(props)=>{
     const history = useHistory();
     const dispatch = props.dispatch;
 
-    const { user, questionImage } = useSelector((state) => ({ ...state }));
+    const { questionImage } = useSelector((state) => ({ ...state }));
     const [textUrl,setTextUrl]=useState('');
     const [diagramUrl,setDiagramUrl]=useState('');
     const [recognizedQuestionText,setRecognizedQuestionText]=useState('');

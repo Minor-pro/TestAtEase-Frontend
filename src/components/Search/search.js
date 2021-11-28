@@ -1,5 +1,4 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { searchQuestions } from "redux/actions/searchAction";
 import { Input, InputGroup, InputGroupAddon, InputGroupText } from "reactstrap";
@@ -8,8 +7,6 @@ const Search = () => {
   const dispatch = useDispatch();
   const { search } = useSelector((state) => ({ ...state }));
   const { text } = search;
-
-  const history = useHistory();
 
   const handleChange = (e) => {
     dispatch(searchQuestions({text:e.target.value}));

@@ -1,8 +1,4 @@
-import react from "react";
 import {Button, Input, Modal, ModalBody, ModalHeader } from "reactstrap";
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-import NoImageAvailable from "../../assets/img/NoImageAvailable.jpg";
-import { Carousel } from 'react-responsive-carousel';
 
 const FileNameModal=({modal, toggle,finishTest, handleFileNameChange, fileName, setFileName, toggleModal})=>{
     const  downloadFile=()=>{

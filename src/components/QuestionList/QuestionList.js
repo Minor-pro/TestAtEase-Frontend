@@ -62,10 +62,7 @@ const QuestionList=(props)=>{
             searchQuestionsByText(text);
         }, 300);
         return () => clearTimeout(delayed);
-      }, [text]);
-    
-      
-    //eslint-disable-next-line
+      }, [text]); // eslint-disable-line react-hooks/exhaustive-deps
     useEffect(()=>{
         if(questionToEdit)ContinueToEdit()
     },[questionToEdit]) // eslint-disable-line react-hooks/exhaustive-deps

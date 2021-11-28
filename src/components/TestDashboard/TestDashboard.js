@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
-import {Button, Card, CardTitle, CardImg, Col, CardBody} from "reactstrap";
-import searchImg from "../../assets/img/search.png";
-import quesImg from "../../assets/img/question.png";
+import {Button, Col} from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
 import TestQuestionListCard from "components/QuestionList/TestQuestionListCard";
 import { useHistory } from "react-router";
-import { addTestQuestion } from "redux/actions/testAction";
 import { removeQuestionFromTest } from "redux/actions/testAction";
 import { generateDoc } from "functions/genrateWordDoc";
 import FileNameModal from "components/Modals/FileNameModal";
@@ -32,7 +29,7 @@ const TestDashboard=()=>{
 
     const removeTestQuestion=()=>{
         const testQuestionsArrayCopy=questions;
-        var newTestQuestions = testQuestionsArrayCopy.filter(question=> question!=questionToRemove); 
+        var newTestQuestions = testQuestionsArrayCopy.filter(question=> question!==questionToRemove); 
         dispatch(removeQuestionFromTest(newTestQuestions));
         history.go(0);
     }

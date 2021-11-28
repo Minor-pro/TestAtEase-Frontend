@@ -1,6 +1,6 @@
 import React from "react";
 import GoogleLogin from "react-google-login";
-import { connect, useDispatch, useSelector } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { loginUser } from "redux/actions/userAction";
 import web from "./landingimage.svg"; 
 import "./Login.css"

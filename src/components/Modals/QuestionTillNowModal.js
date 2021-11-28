@@ -1,18 +1,16 @@
-import react from "react";
 import {Modal, ModalBody, ModalHeader } from "reactstrap";
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-import NoImageAvailable from "../../assets/img/NoImageAvailable.jpg";
-import { Carousel } from 'react-responsive-carousel';
+//import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+//import NoImageAvailable from "../../assets/img/NoImageAvailable.jpg";
+//import { Carousel } from 'react-responsive-carousel';
 
 const QuestionTillNowModal=({modal, toggle, questionImage})=>{
-    const genrateThumbs=()=>{
-        
-        const thumbs=questionImage.diagramUrl.map(questionPart=>(
-            <img src={questionPart!=='' ? questionPart : NoImageAvailable}/>
+    // const genrateThumbs=()=>{
+    //     const thumbs=questionImage.diagramUrl.map(questionPart=>(
+    //         <img src={questionPart!=='' ? questionPart : NoImageAvailable}/>
             
-        ))
-        return thumbs;
-    }
+    //     ))
+    //     return thumbs;
+    // }
     return(
         <Modal isOpen={modal} toggle={toggle} scrollable>
             <ModalHeader toggle={toggle} >
@@ -20,7 +18,7 @@ const QuestionTillNowModal=({modal, toggle, questionImage})=>{
             <ModalBody>
                 {questionImage.diagramUrl.map((questionPart, index)=>(
                         <div>
-                            <img src={questionPart}/>
+                            <img src={questionPart} alt="Question Diagram"/>
                             <br/>
                             <p>{questionImage.questionText[index]}</p>
                         </div>

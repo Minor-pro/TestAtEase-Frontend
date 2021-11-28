@@ -9,15 +9,7 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
   Container,
-  InputGroup,
-  InputGroupText,
-  InputGroupAddon,
-  Input,
 } from "reactstrap";
 import { loginUser } from "redux/actions/userAction";
 
@@ -34,7 +26,7 @@ function Header(props) {
   }
 
   const [isOpen, setIsOpen] = React.useState(false);
-  const [dropdownOpen, setDropdownOpen] = React.useState(false);
+  //const [dropdownOpen, setDropdownOpen] = React.useState(false);
   const [color, setColor] = React.useState("transparent");
   const sidebarToggle = React.useRef();
   const location = useLocation();
@@ -46,9 +38,9 @@ function Header(props) {
     }
     setIsOpen(!isOpen);
   };
-  const dropdownToggle = (e) => {
-    setDropdownOpen(!dropdownOpen);
-  };
+  // const dropdownToggle = (e) => {
+  //   setDropdownOpen(!dropdownOpen);
+  // };
   const getBrand = () => {
     let brandName = "Default Brand";
     routes.map((prop, key) => {

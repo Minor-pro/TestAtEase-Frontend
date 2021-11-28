@@ -2,7 +2,7 @@
 import React, {useEffect} from 'react';
 import "./ListCard.css"
 import NoImageAvailble from "../../assets/img/NoImageAvailable.jpg";
-import { Button, Card, CardBody, Col } from 'reactstrap';
+import { Button, Card, CardBody } from 'reactstrap';
 
 const TestQuestionListCard=({question, setQuestionToRemove, remove, questionToRemove})=>{
   const {text,images,id,topicTags}=question
