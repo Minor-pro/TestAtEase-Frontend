@@ -12,14 +12,11 @@ const Search = () => {
   const history = useHistory();
 
   const handleChange = (e) => {
-    console.log(e.target.value)
     dispatch(searchQuestions({text:e.target.value}));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("WOW")
-    //history.push(`/shop?${text}`);
   };
 
   return (

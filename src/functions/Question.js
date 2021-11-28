@@ -1,7 +1,6 @@
 import axios from "axios";
 
 export const addQuestion=async(user,QuestionText,diagramImage,topicTags,recognizedWords)=>{  
-    console.log(user,QuestionText,diagramImage,topicTags)
     return await axios({
         method: "post",
         url: `${process.env.REACT_APP_API}/question`,
@@ -10,7 +9,6 @@ export const addQuestion=async(user,QuestionText,diagramImage,topicTags,recogniz
     })
 }
 export const updateQuestion=async(qid,QuestionText,diagramImage,topicTags,recognizedWords)=>{  
-    console.log(qid,QuestionText,diagramImage,topicTags)
     return await axios({
         method: "post",
         url: `${process.env.REACT_APP_API}/question/${qid}`,

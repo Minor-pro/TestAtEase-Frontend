@@ -61,7 +61,6 @@ const EditQuestion = (props) =>{
         })
     }
     const removeEdit=(coord)=>{
-        //console.log(edits)
         setEdits(prev=>prev.filter((o)=>o.coords!==coord))
     }
     const handleEditChange = (e) => {
@@ -110,15 +109,12 @@ const EditQuestion = (props) =>{
         })  
         mergeImages(textImages)
             .then(editedImage => {
-                //console.log(editedImage);
                 setDiagramImage(editedImage);
                 let questionImageWordCopy=questionImage.words[currentQuestionImageIndex];
                 edits.forEach(edit=>{
                     questionImageWordCopy.forEach(word=>{
                         if(word['Left']===edit.coords[0] && word['Top']===edit.coords[1]) {
-                            //console.log(word)
-                            word['WordText']=edit['replacement'];                 
-                            //console.log(word)      
+                            word['WordText']=edit['replacement'];      
                         }
                     })
                 })
@@ -144,7 +140,6 @@ const EditQuestion = (props) =>{
             "words":recognizedWordsTillNow,
             "questionText": textTillNow
         }
-        console.log(imagesUrl)
         dispatch(uploadQuestionImage(imagesUrl))
         history.push("/admin/upload-crop")
     }
@@ -159,14 +154,13 @@ const EditQuestion = (props) =>{
         recognizedWordsTillNow[currentQuestionImageIndex]=recognizedWords;
         addQuestion(user, textTillNow, diagramsTillNow, topicTags, recognizedWordsTillNow)
         .then(res=>{
-            console.log(res)
             dispatch(uploadQuestionImage({
                 "textUrl":[],
                 "diagramUrl":[],
                 "words":[],
                 "questionText": []
             }))
-            test && test.test ? history.push("/admin/testdashboard") : history.push("/admin/upload-crop")
+            test && test.test ? history.push("/admin/testdashboard") : history.push("/admin/teacherdashboard")
         })
         .catch(err=>{
             console.log(err);
@@ -182,7 +176,6 @@ const EditQuestion = (props) =>{
         recognizedWordsTillNow[currentQuestionImageIndex]=recognizedWords;
         addQuestion(user, textTillNow, diagramsTillNow, topicTags, recognizedWordsTillNow)
         .then(res=>{
-            console.log(res)
             dispatch(addTestQuestion(res['data']['question']))
             dispatch(uploadQuestionImage({
                 "textUrl":[],
@@ -190,7 +183,7 @@ const EditQuestion = (props) =>{
                 "words":[],
                 "questionText": []
             }))
-            test && test.test ? history.push("/admin/testdashboard") : history.push("/admin/upload-crop")
+            test && test.test ? history.push("/admin/testdashboard") : history.push("/admin/teacherdashboard")
         })
         .catch(err=>{
             console.log(err);
@@ -203,7 +196,7 @@ const EditQuestion = (props) =>{
             "words":[],
             "questionText": []
         }))
-        test && test.test ? history.push("/admin/testdashboard") : history.push("/admin/upload-crop")
+        test && test.test ? history.push("/admin/testdashboard") : history.push("/admin/teacherdashboard")
     }
 
     return( 

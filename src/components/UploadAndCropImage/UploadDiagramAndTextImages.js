@@ -19,9 +19,11 @@ const ImagesUpload=(props)=>{
     const [recognizedQuestionText,setRecognizedQuestionText]=useState('');
     const [recognizedWords, setRecognizedWords]=useState([])
     const [loadingStage, setLoadingStage]=useState('')
+    const [recognizing, setRecognizing]=useState(true);
     const words=[];
     const questionImageToText= async(textUrl)=>{
         try{
+            setRecognizing(true);
             // const result=await Tesseract.recognize(
             //     textUrl,'eng',
             //     { 
@@ -45,6 +47,7 @@ const ImagesUpload=(props)=>{
             console.log(text);
             setLoadingStage({progress:1, status:"Text Recognized"})
             setRecognizedQuestionText((_)=>text)
+            text!=='' && setRecognizing(false);
             await worker.terminate();
         }
         catch(err){
@@ -53,6 +56,7 @@ const ImagesUpload=(props)=>{
     }
 
     const getTextCoordinatesInDiagram=async()=>{
+        setRecognizing(true);
         var QuestionDiagramImageForm = new FormData();
         // QuestionDiagramImageForm.set('url', 'http://i.imgur.com/fwxooMv.png');
         QuestionDiagramImageForm.set('base64Image', diagramUrl);
@@ -60,7 +64,6 @@ const ImagesUpload=(props)=>{
         QuestionDiagramImageForm.set('isOverlayRequired', true);
         getCoordinates(QuestionDiagramImageForm)
         .then(function (response) {
-            console.log(response)
             response && response['data']['ParsedResults'][0]['TextOverlay']['Lines'].forEach(line => {
                 line['Words'].forEach(word=>{
                     words.push(word);
@@ -68,10 +71,11 @@ const ImagesUpload=(props)=>{
             });
             console.log(words)
             setRecognizedWords(words)
+            response['data']['ParsedResults'][0]['TextOverlay']['Lines']!==undefined && setRecognizing(false);
             console.log(recognizedWords)
         })
-        .catch(function (response) {
-            console.log(response);
+        .catch(function (err) {
+            console.log(err);
         });
     }
     const submitImages =async() => {
@@ -87,7 +91,6 @@ const ImagesUpload=(props)=>{
             "words":[...questionImage.words,recognizedWords],
             "questionText": [...questionImage.questionText,recognizedQuestionText]
         }
-        console.log(imagesUrl)
         dispatch(uploadQuestionImage(imagesUrl))
         history.push('/admin/edit');
     }
@@ -99,7 +102,7 @@ const ImagesUpload=(props)=>{
                     
                 </Col>
                 <Col md={4} sm={12}>
-                    <Button className="btn btn-block" color="primary" onClick={ContinueToEdit} disabled={recognizedQuestionText==='' && recognizedWords.length===0 } >Continue to Edit</Button>
+                    <Button className="btn btn-block" color="primary" onClick={ContinueToEdit} disabled={recognizing && recognizedQuestionText==='' && recognizedWords.length===0 } >Continue to Edit</Button>
                 </Col>
             </div>
             <div className="row">

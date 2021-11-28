@@ -36,12 +36,6 @@ const Dashboard = (props)=>{
     }, [location]);
     return (
         <div className="wrapper">
-        {/* <Sidebar
-            {...props}
-            routes={routes}
-            bgColor={backgroundColor}
-            activeColor={activeColor}
-        /> */}
             <div className="main-panel" ref={mainPanel}>
                 <DemoNavbar {...props} />
                 <Switch>

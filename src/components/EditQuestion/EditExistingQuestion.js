@@ -174,7 +174,7 @@ const EditExistingQuestion = (props) =>{
                 "words":[],
                 "questionText": []
             }))
-            test && test.test ? history.push("/admin/testdashboard") : history.push("/admin/upload-crop")
+            test && test.test ? history.push("/admin/testdashboard") : history.push("/admin/teacherdashboard")
         })
         .catch(err=>{
             console.log(err);
@@ -197,7 +197,7 @@ const EditExistingQuestion = (props) =>{
                 "words":[],
                 "questionText": []
             }))
-            test && test.test ? history.push("/admin/testdashboard") : history.push("/admin/upload-crop")
+            test && test.test ? history.push("/admin/testdashboard") : history.push("/admin/teacherdashboard")
         })
         .catch(err=>{
             console.log(err);
@@ -210,7 +210,7 @@ const EditExistingQuestion = (props) =>{
             "words":[],
             "questionText": []
         }))
-        test && test.test ? history.push("/admin/testdashboard") : history.push("/admin/upload-crop")
+        test && test.test ? history.push("/admin/testdashboard") : history.push("/admin/teacherdashboard")
     }
     useEffect(()=>{
 

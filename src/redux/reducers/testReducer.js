@@ -21,7 +21,9 @@ export default function testReducer(state = initialState, action)
             return{
                 ...state,
                 test: action.payload,
-            }
+            };
+        case "DISCARD_TEST":
+            return initialState
         default:
             return state;
     }

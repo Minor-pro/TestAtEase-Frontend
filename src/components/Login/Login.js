@@ -1,6 +1,6 @@
 import React from "react";
 import GoogleLogin from "react-google-login";
-import { connect } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { loginUser } from "redux/actions/userAction";
 import web from "./landingimage.svg"; 
 import "./Login.css"
@@ -8,10 +8,9 @@ import { useHistory } from "react-router";
 import { loginAndAddUser } from "functions/auth";
 //import { useHistory } from "react-router-dom";
 
-const Login=(props)=>{
-    //const history = useHistory();
-    const dispatch = props.dispatch;
+const Login=()=>{
     const history = useHistory();
+    const dispatch = useDispatch();
     const login = async (res) => {
         var user = res.profileObj;
         loginAndAddUser(user)
@@ -36,9 +35,9 @@ const Login=(props)=>{
                             <h2 className="my-3"> Now make test by just clicking pictures</h2>
                             <div className="mt-3">
                              <GoogleLogin
-                                 clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-                                 buttonText="Login with Google"
-                                 onSuccess={login}
+                                clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+                                buttonText="Login with Google"
+                                onSuccess={login}
                                 cookiePolicy={"single_host_origin"}
                                 className="btn-get-started"
                             />

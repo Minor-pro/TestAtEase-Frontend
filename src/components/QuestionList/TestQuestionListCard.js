@@ -14,23 +14,11 @@ const TestQuestionListCard=({question, setQuestionToRemove, remove, questionToRe
   const displayText=text.find(t=>t!=='');
 
   useEffect(()=>{
-    console.log("CALLED",questionToRemove)
   },[questionToRemove])
 
   return (
     <Card  key ={id} className="TestQuestionListCard">
       <CardBody className="card-body d-flex flex-column">
-        {/* <div className="row">
-            <Col>
-              <p class="card-text mb-4">{displayText ? (displayText.length <= 60 ? displayText: displayText.slice(0,55) + "....."): "No Associated Text"}</p>
-            </Col>
-            <Col>
-              <img src={displayImage?displayImage:NoImageAvailble} class="QuestionListCardImage" alt="Question Diagram"/>
-            </Col>
-            <Col>
-              <Button class="btn btn-primary" color="info" onClick={editQuestion}>Edit</Button>
-            </Col>
-        </div>     */}
         <img src={displayImage?displayImage:NoImageAvailble} class="card-img-top QuestionListCardImage" alt="Question Diagram"/>
           <div class="card-body d-flex flex-column">
             <h4>{topicTags.join(', ')}</h4>

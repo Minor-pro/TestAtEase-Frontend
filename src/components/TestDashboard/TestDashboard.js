@@ -9,6 +9,7 @@ import { addTestQuestion } from "redux/actions/testAction";
 import { removeQuestionFromTest } from "redux/actions/testAction";
 import { generateDoc } from "functions/genrateWordDoc";
 import FileNameModal from "components/Modals/FileNameModal";
+import { discardTest } from "redux/actions/testAction";
 
 const TestDashboard=()=>{
 
@@ -30,7 +31,6 @@ const TestDashboard=()=>{
     const [questionToRemove, setQuestionToRemove]=useState();
 
     const removeTestQuestion=()=>{
-        console.log(questionToRemove)
         const testQuestionsArrayCopy=questions;
         var newTestQuestions = testQuestionsArrayCopy.filter(question=> question!=questionToRemove); 
         dispatch(removeQuestionFromTest(newTestQuestions));
@@ -38,15 +38,16 @@ const TestDashboard=()=>{
     }
     const handleFileNameChange=(e)=>{
         setFileName(e.target.value)
-        console.log(fileName)
     }
     const finishTest=()=>{
         generateDoc(test.questions,fileName);
-        //push.go(0);
+    }
+    const discard=()=>{
+        dispatch(discardTest())
+        history.push("/admin/teacherdashboard")
     }
 
     useEffect(()=>{
-        console.log(questionToRemove)
         if(questionToRemove)removeTestQuestion()
     },[questionToRemove]) // eslint-disable-line react-hooks/exhaustive-deps
     return (
@@ -54,35 +55,16 @@ const TestDashboard=()=>{
             <div className="row">
                 <Col md={3}>
                     <Button className="btn btn-block" size="lg" color="primary" onClick={search}>Search a Question</Button>   
-                    {/* <Card>
-                        <CardBody>
-                            <CardTitle className="ChioceCardTitle" tag="h3">Search a Question</CardTitle>
-                            <CardImg className="ChioceCardImage" src={searchImg}></CardImg>
-                            <Button className="btn btn-block" color="primary" onClick={search}>Search a Question</Button>   
-                        </CardBody>                                    
-                    </Card> */}
                 </Col>
                 <Col md={3}>
-                    <Button className="btn btn-block" size="lg" color="primary" onClick={add}>Add a Question</Button>      
-                    {/* <Card>
-                        <CardBody>
-                            <CardTitle className="ChioceCardTitle" tag="h3">Add a Question</CardTitle>
-                            <CardImg className="ChioceCardImage" src={quesImg}></CardImg>
-                            <Button className="btn btn-block" color="primary" onClick={add}>Add a Question</Button>      
-                        </CardBody>                                    
-                    </Card> */}
-                </Col>                
-                <Col md={2}></Col>
-                <Col md={4}>
+                    <Button className="btn btn-block" size="lg" color="primary" onClick={add}>Add a Question</Button>    
+                </Col>             
+                <Col md={3}>
+                    <Button className="btn btn-block" size="lg" color="danger" onClick={discard}>Stop/Discard Test</Button>   
+                </Col>
+                <Col md={3}>
                     <Button className="btn btn-block" size="lg" color="info" onClick={toggleModal}>Finish Test</Button>    
                     <FileNameModal modal={modal} toggle={toggleModal} handleFileNameChange={handleFileNameChange} setFileName={setFileName} fileName={fileName} finishTest={finishTest} toggleModal={toggleModal}/>
-                    {/* <Card>
-                        <CardBody>
-                            <CardTitle className="ChioceCardTitle" tag="h3">Add a Question</CardTitle>
-                            <CardImg className="ChioceCardImage" src={quesImg}></CardImg>
-                            <Button className="btn btn-block" color="info" onClick={add}>Finish Test</Button>      
-                        </CardBody>                                    
-                    </Card> */}
                 </Col>
             </div>
             <hr/>

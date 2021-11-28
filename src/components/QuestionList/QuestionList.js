@@ -22,7 +22,6 @@ const QuestionList=(props)=>{
     const [questionToEdit, setQuestionToEdit]=useState();
 
     const ContinueToEdit=()=>{
-        console.log(questionToEdit)
         const imagesUrl={
             "textUrl":questionToEdit ? questionToEdit.text.map(()=>''):[],
             "diagramUrl":questionToEdit ? questionToEdit.images : [],
@@ -31,7 +30,6 @@ const QuestionList=(props)=>{
             "topicTags" : questionToEdit ? questionToEdit.topicTags.join(", ") : '',
             "index":0
         }
-        console.log(imagesUrl)
         dispatch(uploadQuestionImage(imagesUrl))
         dispatch(searchQuestions({text:""}));
         history.push(`/admin/editexisting/${questionToEdit.id}`)
@@ -46,7 +44,6 @@ const QuestionList=(props)=>{
         })
     }
     const searchQuestionsByText = (argtext) => {
-        console.log(user,argtext)
         axios({
             method: "post",
             url: `${process.env.REACT_APP_API}/list/search`,
@@ -54,7 +51,6 @@ const QuestionList=(props)=>{
             headers: { "Content-Type": "application/json" },
         })
         .then((res) => {
-            console.log(res)
             setSearchedQuestions(res.data);
         })
         .catch(err=>{
@@ -71,7 +67,6 @@ const QuestionList=(props)=>{
       
     //eslint-disable-next-line
     useEffect(()=>{
-        console.log(questionToEdit)
         if(questionToEdit)ContinueToEdit()
     },[questionToEdit]) // eslint-disable-line react-hooks/exhaustive-deps
     useEffect(()=>{

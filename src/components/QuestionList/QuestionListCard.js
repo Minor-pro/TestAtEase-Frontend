@@ -11,9 +11,7 @@ const QuestionListCard=({question, setQuestionToEdit, edit, questionToEdit})=>{
   }
   const displayImage=images.find(image => image !== '')
   const displayText=text.find(t=>t!=='');
-  console.log(displayText)
   useEffect(()=>{
-    console.log("CALLED",questionToEdit)
   },[questionToEdit])
   return (
     <Card  key ={id} className="QuestionListCard">

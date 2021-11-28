@@ -7,3 +7,6 @@ export const removeQuestionFromTest = (payload = {}) => {
 export const createTest = (payload = {}) => {
     return { type: "CREATE_TEST", payload };
 };
+export const discardTest = () => {
+    return { type: "DISCARD_TEST"};
+};

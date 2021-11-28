@@ -51,10 +51,7 @@ store.subscribe(() => saveToLocalStorage(store.getState()));
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
-    <Switch>
-      <Route path="/" render={(props) => <App {...props} />} />
-      <Redirect to="/" />
-    </Switch>
+    <App/>
   </BrowserRouter>
   </Provider>
   ,
