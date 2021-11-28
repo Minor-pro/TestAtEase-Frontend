@@ -74,14 +74,14 @@ const QuestionList=(props)=>{
             <div clas="row">
                 <Search/>
             </div>
-            <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div className="row row-cols-1 row-cols-md-3 g-4">
             {allQuestions.length>0 && text.length<1 && allQuestions.map((question)=>(
-                <div key= {question.id}class="col">
+                <div key= {question.id} className="col">
                     <QuestionListCard question={question} setQuestionToEdit={setQuestionToEdit} edit={ContinueToEdit} questionToEdit={questionToEdit}/>
                 </div>
             ))}   
-            {searchedQuestions.length>0 && searchedQuestions.map((question)=>(
-                <div key= {question.id}class="col">
+            {text.length>0 && searchedQuestions.length>0 && searchedQuestions.map((question)=>(
+                <div key= {question.id} className="col">
                     <QuestionListCard question={question} setQuestionToEdit={setQuestionToEdit} edit={ContinueToEdit} questionToEdit={questionToEdit}/>
                 </div>
             ))}           

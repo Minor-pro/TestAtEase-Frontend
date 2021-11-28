@@ -93,7 +93,7 @@ function Header(props) {
     >
       <Container fluid>
         <div className="navbar-wrapper">
-          <NavbarBrand href="/admin/teacherdashboard"><i class="fas fa-home"></i>{' '}{getBrand()}</NavbarBrand>
+          <NavbarBrand href="/admin/teacherdashboard"><i className="fas fa-home"></i>{' '}{getBrand()}</NavbarBrand>
         </div>
         <NavbarToggler onClick={toggle}>
           <span className="navbar-toggler-bar navbar-kebab" />
@@ -104,7 +104,7 @@ function Header(props) {
           <Nav navbar>
             <NavItem>
               <Link onClick ={logout} className="nav-link btn-rotate">
-                <i class="fas fa-sign-out-alt"></i>
+                <i className="fas fa-sign-out-alt"></i>
                 <p>
                   <span className="d-lg-none d-md-block">Logout</span>
                 </p>

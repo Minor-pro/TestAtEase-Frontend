@@ -6,6 +6,7 @@ import { Button, Card, CardBody } from 'reactstrap';
 
 const QuestionListCard=({question, setQuestionToEdit, edit, questionToEdit})=>{
   const {text,images,id,topicTags}=question
+  console.log(typeof(topicTags), topicTags)
   const editQuestion=()=>{
     setQuestionToEdit(question);
   }
@@ -16,11 +17,11 @@ const QuestionListCard=({question, setQuestionToEdit, edit, questionToEdit})=>{
   return (
     <Card  key ={id} className="QuestionListCard">
       <CardBody>
-          <img src={displayImage?displayImage:NoImageAvailble} class="card-img-top QuestionListCardImage" alt="Question Diagram"/>
-          <div class="card-body d-flex flex-column">
-            <h4>{topicTags.join(', ')}</h4>
-            <p class="card-text mb-4">{displayText ? (displayText.length <= 60 ? displayText: displayText.slice(0,55) + "....."): "No Associated Text"}</p>
-            <Button class="btn btn-primary mt-auto align-self-start" color="info" onClick={editQuestion}>Edit</Button>
+          <img src={displayImage?displayImage:NoImageAvailble} className="card-img-top QuestionListCardImage" alt="Question Diagram"/>
+          <div className="card-body d-flex flex-column">
+            <h4>{topicTags.join(', ').replace(/(^\w|\s\w)/g, m => m.toUpperCase())}</h4>
+            <p className="card-text mb-4">{displayText ? (displayText.length <= 60 ? displayText: displayText.slice(0,55) + "....."): "No Associated Text"}</p>
+            <Button className="btn btn-primary mt-auto align-self-start" color="info" onClick={editQuestion}>Edit</Button>
           </div>
       </CardBody>
     </Card>

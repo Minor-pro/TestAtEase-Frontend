@@ -215,11 +215,11 @@ const EditExistingQuestion = (props) =>{
                 <Col md="3" sm="0">
                     {questionImage.index!==(questionImage.questionText.length-1) && <Button className="NextButton btn-block" size="lg" color="success" onClick={handleNext}>Next</Button>}
                 </Col>
-                <Col md="3" sm="0">
+                {/* <Col md="3" sm="0">
                 </Col>
                 <Col md="3" sm="12">
                     <Button className="FinishTestButton btn-block" size="lg" color="info">Finish Test</Button>{' '}
-                </Col>
+                </Col> */}
             </div>
             <Form onSubmit={inTest? handleQuesionSubmitAndAdd : handleQuesionSubmit}>
                 {questionImage.questionText[currentQuestionImageIndex] && <div className="row">
@@ -279,7 +279,7 @@ const EditExistingQuestion = (props) =>{
                                             <Input type="text" key={[index,"replacement"]} name={index} placeholder="Replace with" onChange={handleEditChange}/>
                                         </Col>
                                         <Col>
-                                            <Button color="warning" id="removeEdit" onClick={() => removeEdit(coords)}><i class="fas fa-minus-circle"></i></Button>
+                                            <Button color="warning" id="removeEdit" onClick={() => removeEdit(coords)}><i className="fas fa-minus-circle"></i></Button>
                                         </Col>
                                     </Row>
                                 ))}

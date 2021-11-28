@@ -15,7 +15,6 @@ const ImageUpload=({cardTitle,fileSelector,setUrl})=>{
 
     const onSelectFile = (e) => {
         if (e.target.files && e.target.files.length > 0) {
-            console.log(cardTitle)
             const reader = new FileReader();
             reader.addEventListener("load", () => setUpImg(reader.result));
             reader.readAsDataURL(e.target.files[0]);
@@ -88,16 +87,12 @@ const ImageUpload=({cardTitle,fileSelector,setUrl})=>{
         })
       }
     const generateImageUrl= (canvas, crop)=>{
-        console.log(canvas,crop)
-        console.log(typeof crop)
         if (!crop || !canvas) {
           return;
         }
 
         let imageUrl = canvas.toDataURL();
-        console.log(imageUrl);
         resizeImage(imageUrl)
-        console.log(imageUrl);
         setUrl(imageUrl);
         /////////////////////////////////// To Download Cropped Image
         // canvas.toBlob(

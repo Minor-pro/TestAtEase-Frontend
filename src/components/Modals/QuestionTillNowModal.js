@@ -18,7 +18,7 @@ const QuestionTillNowModal=({modal, toggle, questionImage})=>{
             <ModalBody>
                 {questionImage.diagramUrl.map((questionPart, index)=>(
                         <div>
-                            <img src={questionPart} alt="Question Diagram"/>
+                            {questionPart!=='' && <img src={questionPart} alt="Question Diagram"/>}
                             <br/>
                             <p>{questionImage.questionText[index]}</p>
                         </div>

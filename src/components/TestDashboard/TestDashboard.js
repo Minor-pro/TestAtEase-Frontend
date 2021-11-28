@@ -66,9 +66,9 @@ const TestDashboard=()=>{
             </div>
             <hr/>
             <h3>Questions in Test</h3>
-            <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div className="row row-cols-1 row-cols-md-3 g-4">
             {questions.length>0 && questions.map((question)=>(
-                <div key= {question.id}class="col">
+                <div key= {question.id} className="col">
                     <TestQuestionListCard question={question} setQuestionToRemove={setQuestionToRemove} remove={removeTestQuestion} questionToRemove={questionToRemove}/>
                 </div>
             ))}            

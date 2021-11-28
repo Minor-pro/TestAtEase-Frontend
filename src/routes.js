@@ -35,7 +35,7 @@ var routes = [
   },
   {
     path: "/upload-crop",
-    name: "Uplaod And Crop",
+    name: "Upload And Crop",
     icon: "nc-icon nc-bank",
     component: ImagesUpload,
     layout: "/admin",
